@@ -1006,11 +1006,11 @@ int PM_IdlePoseForsaber_anim_level(void)
 					//simple saber attack
 					if (is_holding_block_button)
 					{
-						if (saber1 && saber1->type == SABER_GRIE)
+						if (saber1 && saber1->type == SABER_DUAL_GRIE)
 						{
 							return BOTH_SABERDUAL_STANCE_GRIEVOUS;
 						}
-						if (saber1 && saber1->type == SABER_GRIE4)
+						if (saber1 && saber1->type == SABER_DUAL_GRIE4)
 						{
 							anim = BOTH_SABERDUAL_STANCE_GRIEVOUS;
 						}
@@ -1041,8 +1041,8 @@ int PM_IdlePoseForsaber_anim_level(void)
 				{
 					if (is_holding_block_button)
 					{
-						if (saber1 && (saber1->type == SABER_BACKHAND
-							|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+						if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+							|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 						{
 							anim = BOTH_SABERBACKHAND_STANCE;
 						}
@@ -1075,19 +1075,19 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_YODA) //yoda
+					else if (saber1 && saber1->type == SABER_SINGLE_YODA) //yoda
 					{
 						anim = BOTH_SABERYODA_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+					else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 					{
 						anim = BOTH_SABEROBI_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_REY) //saber ray
+					else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber ray
 					{
 						anim = BOTH_SABER_REY_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_DOOKU) //dooku
+					else if (saber1 && saber1->type == SABER_SINGLE_DOOKU) //dooku
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
@@ -1095,7 +1095,7 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_WINDU) //saber windu
+					else if (saber1 && saber1->type == SABER_SINGLE_WINDU) //saber windu
 					{
 						anim = BOTH_SABEREADY_STANCE;
 					}
@@ -1134,19 +1134,19 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_YODA) //yoda
+					else if (saber1 && saber1->type == SABER_SINGLE_YODA) //yoda
 					{
 						anim = BOTH_SABERYODA_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+					else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 					{
 						anim = BOTH_SABEROBI_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_REY) //saber ray
+					else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber ray
 					{
 						anim = BOTH_SABER_REY_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_DOOKU) //dooku
+					else if (saber1 && saber1->type == SABER_SINGLE_DOOKU) //dooku
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
@@ -1154,7 +1154,7 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_WINDU) //saber windu
+					else if (saber1 && saber1->type == SABER_SINGLE_WINDU) //saber windu
 					{
 						anim = BOTH_SABEREADY_STANCE;
 					}
@@ -1193,19 +1193,19 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_YODA) //yoda
+					else if (saber1 && saber1->type == SABER_SINGLE_YODA) //yoda
 					{
 						anim = BOTH_SABERYODA_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+					else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 					{
 						anim = BOTH_SABEROBI_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_REY) //saber ray
+					else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber ray
 					{
 						anim = BOTH_SABER_REY_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_DOOKU) //dooku
+					else if (saber1 && saber1->type == SABER_SINGLE_DOOKU) //dooku
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
@@ -1213,7 +1213,7 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_WINDU) //saber windu
+					else if (saber1 && saber1->type == SABER_SINGLE_WINDU) //saber windu
 					{
 						anim = BOTH_SABEREADY_STANCE;
 					}
@@ -1252,19 +1252,19 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_YODA) //yoda
+					else if (saber1 && saber1->type == SABER_SINGLE_YODA) //yoda
 					{
 						anim = BOTH_SABERYODA_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+					else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 					{
 						anim = BOTH_SABEROBI_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_REY) //saber ray
+					else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber ray
 					{
 						anim = BOTH_SABER_REY_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_DOOKU) //dooku
+					else if (saber1 && saber1->type == SABER_SINGLE_DOOKU) //dooku
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
@@ -1272,7 +1272,7 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_WINDU) //saber windu
+					else if (saber1 && saber1->type == SABER_SINGLE_WINDU) //saber windu
 					{
 						anim = BOTH_SABEREADY_STANCE;
 					}
@@ -1311,19 +1311,19 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_YODA) //yoda
+					else if (saber1 && saber1->type == SABER_SINGLE_YODA) //yoda
 					{
 						anim = BOTH_SABERYODA_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+					else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 					{
 						anim = BOTH_SABEROBI_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_REY) //saber ray
+					else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber ray
 					{
 						anim = BOTH_SABER_REY_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_DOOKU) //dooku
+					else if (saber1 && saber1->type == SABER_SINGLE_DOOKU) //dooku
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
@@ -1331,7 +1331,7 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_WINDU) //saber windu
+					else if (saber1 && saber1->type == SABER_SINGLE_WINDU) //saber windu
 					{
 						anim = BOTH_SABEREADY_STANCE;
 					}
@@ -1371,19 +1371,19 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_YODA) //yoda
+					else if (saber1 && saber1->type == SABER_SINGLE_YODA) //yoda
 					{
 						anim = BOTH_SABERYODA_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+					else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 					{
 						anim = BOTH_SABEROBI_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_REY) //saber ray
+					else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber ray
 					{
 						anim = BOTH_SABER_REY_STANCE;
 					}
-					else if (saber1 && saber1->type == SABER_DOOKU) //dooku
+					else if (saber1 && saber1->type == SABER_SINGLE_DOOKU) //dooku
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
@@ -1391,7 +1391,7 @@ int PM_IdlePoseForsaber_anim_level(void)
 					{
 						anim = BOTH_SABERSTANCE_STANCE_ALT;
 					}
-					else if (saber1 && saber1->type == SABER_WINDU) //saber windu
+					else if (saber1 && saber1->type == SABER_SINGLE_WINDU) //saber windu
 					{
 						anim = BOTH_SABEREADY_STANCE;
 					}
@@ -1460,11 +1460,11 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		&& !pm->ps->saberHolstered)
 	{
 		//dual sabers, both on
-		if (saber1 && saber1->type == SABER_GRIE)
+		if (saber1 && saber1->type == SABER_DUAL_GRIE)
 		{
 			return BOTH_SABERDUAL_STANCE_GRIEVOUS;
 		}
-		if (saber1 && saber1->type == SABER_GRIE4)
+		if (saber1 && saber1->type == SABER_DUAL_GRIE4)
 		{
 			return BOTH_SABERDUAL_STANCE_GRIEVOUS;
 		}
@@ -1482,16 +1482,16 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_YODA)
+		else if (saber1 && saber1->type == SABER_SINGLE_YODA)
 		{
 			anim = BOTH_SABERYODA_STANCE;
 		}
-		else if (saber1 && (saber1->type == SABER_BACKHAND
-			|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+		else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+			|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 		{
 			anim = BOTH_SABERBACKHAND_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_DOOKU)
+		else if (saber1 && saber1->type == SABER_SINGLE_DOOKU)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
@@ -1499,19 +1499,19 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 		{
 			anim = BOTH_SABEROBI_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_REY) //saber backhand
+		else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber backhand
 		{
 			anim = BOTH_SABER_REY_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_GRIE) //saber
+		else if (saber1 && saber1->type == SABER_DUAL_GRIE) //saber
 		{
 			anim = BOTH_SABERDUAL_STANCE_GRIEVOUS;
 		}
-		else if (saber1 && saber1->type == SABER_GRIE4) //saber
+		else if (saber1 && saber1->type == SABER_DUAL_GRIE4) //saber
 		{
 			anim = BOTH_SABERDUAL_STANCE_GRIEVOUS;
 		}
@@ -1536,16 +1536,16 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_YODA)
+		else if (saber1 && saber1->type == SABER_SINGLE_YODA)
 		{
 			anim = BOTH_SABERYODA_STANCE;
 		}
-		else if (saber1 && (saber1->type == SABER_BACKHAND
-			|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+		else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+			|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 		{
 			anim = BOTH_SABERBACKHAND_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_DOOKU)
+		else if (saber1 && saber1->type == SABER_SINGLE_DOOKU)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
@@ -1553,11 +1553,11 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 		{
 			anim = BOTH_SABEROBI_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_REY) //saber backhand
+		else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber backhand
 		{
 			anim = BOTH_SABER_REY_STANCE;
 		}
@@ -1582,16 +1582,16 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_YODA)
+		else if (saber1 && saber1->type == SABER_SINGLE_YODA)
 		{
 			anim = BOTH_SABERYODA_STANCE;
 		}
-		else if (saber1 && (saber1->type == SABER_BACKHAND
-			|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+		else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+			|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 		{
 			anim = BOTH_SABERBACKHAND_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_DOOKU)
+		else if (saber1 && saber1->type == SABER_SINGLE_DOOKU)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
@@ -1599,11 +1599,11 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 		{
 			anim = BOTH_SABEROBI_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_REY) //saber backhand
+		else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber backhand
 		{
 			anim = BOTH_SABER_REY_STANCE;
 		}
@@ -1621,16 +1621,16 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_YODA)
+		else if (saber1 && saber1->type == SABER_SINGLE_YODA)
 		{
 			anim = BOTH_SABERYODA_STANCE;
 		}
-		else if (saber1 && (saber1->type == SABER_BACKHAND
-			|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+		else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+			|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 		{
 			anim = BOTH_SABERBACKHAND_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_DOOKU)
+		else if (saber1 && saber1->type == SABER_SINGLE_DOOKU)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
@@ -1638,11 +1638,11 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 		{
 			anim = BOTH_SABEROBI_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_REY) //saber backhand
+		else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber backhand
 		{
 			anim = BOTH_SABER_REY_STANCE;
 		}
@@ -1660,16 +1660,16 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_YODA)
+		else if (saber1 && saber1->type == SABER_SINGLE_YODA)
 		{
 			anim = BOTH_SABERYODA_STANCE;
 		}
-		else if (saber1 && (saber1->type == SABER_BACKHAND
-			|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+		else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+			|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 		{
 			anim = BOTH_SABERBACKHAND_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_DOOKU)
+		else if (saber1 && saber1->type == SABER_SINGLE_DOOKU)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
@@ -1677,11 +1677,11 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 		{
 			anim = BOTH_SABEROBI_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_REY) //saber backhand
+		else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber backhand
 		{
 			anim = BOTH_SABER_REY_STANCE;
 		}
@@ -1699,16 +1699,16 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_YODA)
+		else if (saber1 && saber1->type == SABER_SINGLE_YODA)
 		{
 			anim = BOTH_SABERYODA_STANCE;
 		}
-		else if (saber1 && (saber1->type == SABER_BACKHAND
-			|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+		else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+			|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 		{
 			anim = BOTH_SABERBACKHAND_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_DOOKU)
+		else if (saber1 && saber1->type == SABER_SINGLE_DOOKU)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
@@ -1716,11 +1716,11 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 		{
 			anim = BOTH_SABEROBI_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_REY) //saber backhand
+		else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber backhand
 		{
 			anim = BOTH_SABER_REY_STANCE;
 		}
@@ -1738,16 +1738,16 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_YODA)
+		else if (saber1 && saber1->type == SABER_SINGLE_YODA)
 		{
 			anim = BOTH_SABERYODA_STANCE;
 		}
-		else if (saber1 && (saber1->type == SABER_BACKHAND
-			|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+		else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+			|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 		{
 			anim = BOTH_SABERBACKHAND_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_DOOKU)
+		else if (saber1 && saber1->type == SABER_SINGLE_DOOKU)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
@@ -1755,11 +1755,11 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 		{
 			anim = BOTH_SABEREADY_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_WINDU) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_WINDU) //saber obi
 		{
 			anim = BOTH_SABEREADY_STANCE;
 		}
@@ -1778,12 +1778,12 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && (saber1->type == SABER_BACKHAND
-			|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+		else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+			|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 		{
 			anim = BOTH_SABERBACKHAND_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_YODA)
+		else if (saber1 && saber1->type == SABER_SINGLE_YODA)
 		{
 			anim = BOTH_SABERYODA_STANCE;
 		}
@@ -1791,15 +1791,15 @@ int PM_ReadyPoseForsaber_anim_levelBOT(void)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_DOOKU)
+		else if (saber1 && saber1->type == SABER_SINGLE_DOOKU)
 		{
 			anim = BOTH_SABERSTANCE_STANCE_ALT;
 		}
-		else if (saber1 && saber1->type == SABER_OBIWAN) //saber obi
+		else if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber obi
 		{
 			anim = BOTH_SABEROBI_STANCE;
 		}
-		else if (saber1 && saber1->type == SABER_REY) //saber backhand
+		else if (saber1 && saber1->type == SABER_SINGLE_REY) //saber backhand
 		{
 			anim = BOTH_SABER_REY_STANCE;
 		}
@@ -1848,11 +1848,11 @@ int PM_ReadyPoseForsaber_anim_levelDucked(void)
 		&& !pm->ps->saberHolstered)
 	{
 		//dual sabers, both on
-		if (saber1 && saber1->type == SABER_GRIE)
+		if (saber1 && saber1->type == SABER_DUAL_GRIE)
 		{
 			return BOTH_SABERDUAL_STANCE_GRIEVOUS;
 		}
-		if (saber1 && saber1->type == SABER_GRIE4)
+		if (saber1 && saber1->type == SABER_DUAL_GRIE4)
 		{
 			return BOTH_SABERDUAL_STANCE_GRIEVOUS;
 		}
@@ -4356,7 +4356,7 @@ static qboolean PM_AdjustAnglesForKnockdown(playerState_t* ps, usercmd_t* ucmd)
 		}
 
 		if (!PM_InForceGetUp(ps) || (ps->legsTimer > 800 || pm->ps->weapon != WP_SABER) &&
-			bg_get_torso_anim_point(ps, pm_entSelf->localAnimIndex) < .9f && ps->stats[STAT_HEALTH] > 0)
+			BG_GetSelfTorsoAnimPoint(ps, pm_entSelf->localAnimIndex) < .9f && ps->stats[STAT_HEALTH] > 0)
 		{
 			//can only attack if you've started a force-getup and are using the saber
 			ucmd->buttons = 0;
@@ -10896,11 +10896,11 @@ static void PM_Footsteps(void)
 						{
 							if (is_wanting_sprint) //dual sprint here
 							{
-								if (saber1 && saber1->type == SABER_GRIE)
+								if (saber1 && saber1->type == SABER_DUAL_GRIE)
 								{
 									PM_SetAnim(SETANIM_BOTH, BOTH_RUN7, SETANIM_FLAG_NORMAL);
 								}
-								else if (saber1 && saber1->type == SABER_GRIE4)
+								else if (saber1 && saber1->type == SABER_DUAL_GRIE4)
 								{
 									PM_SetAnim(SETANIM_BOTH, BOTH_RUN7, SETANIM_FLAG_NORMAL);
 								}
@@ -10932,19 +10932,19 @@ static void PM_Footsteps(void)
 							}
 							else
 							{
-								if (saber1 && (saber1->type == SABER_BACKHAND || saber1->type == SABER_ASBACKHAND)) //saber backhand
+								if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND || saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 								{
 									PM_SetAnim(SETANIM_BOTH, BOTH_RUN_STAFF, SETANIM_FLAG_NORMAL);
 								}
-								else if (saber1 && saber1->type == SABER_YODA) //saber yoda
+								else if (saber1 && saber1->type == SABER_SINGLE_YODA) //saber yoda
 								{
 									PM_SetAnim(SETANIM_BOTH, BOTH_RUN10, SETANIM_FLAG_NORMAL);
 								}
-								else if (saber1 && saber1->type == SABER_GRIE) //saber kylo
+								else if (saber1 && saber1->type == SABER_DUAL_GRIE) //saber kylo
 								{
 									PM_SetAnim(SETANIM_BOTH, BOTH_RUN7, SETANIM_FLAG_NORMAL);
 								}
-								else if (saber1 && saber1->type == SABER_GRIE4) //saber kylo
+								else if (saber1 && saber1->type == SABER_DUAL_GRIE4) //saber kylo
 								{
 									PM_SetAnim(SETANIM_BOTH, BOTH_RUN7, SETANIM_FLAG_NORMAL);
 								}
@@ -12127,22 +12127,22 @@ void PM_FinishWeaponChange(void)
 					case SS_STRONG:
 					case SS_TAVION:
 					case SS_DESANN:
-						if (pm_entSelf->s.botclass == BCLASS_DOOKU || saber1 && saber1->type == SABER_DOOKU)
+						if (pm_entSelf->s.botclass == BCLASS_DOOKU || saber1 && saber1->type == SABER_SINGLE_DOOKU)
 						{
 							PM_SetAnim(SETANIM_TORSO, BOTH_DOOKU_SMALLDRAW, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
 						else if (pm_entSelf->s.botclass == BCLASS_YODA ||
-							saber1 && saber1->type == SABER_YODA ||
+							saber1 && saber1->type == SABER_SINGLE_YODA ||
 							(saber1 && (saber1->type == SABER_SFX ||
-								saber1->type == SABER_REY)))
+								saber1->type == SABER_SINGLE_REY)))
 						{
 							PM_SetAnim(SETANIM_TORSO, BOTH_SABER_IGNITION_JFA, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
-						else if (pm_entSelf->s.botclass == BCLASS_OBIWAN || saber1 && saber1->type == SABER_OBIWAN)
+						else if (pm_entSelf->s.botclass == BCLASS_OBIWAN || saber1 && saber1->type == SABER_SINGLE_OBIWAN)
 						{
 							PM_SetAnim(SETANIM_TORSO, BOTH_SHOWOFF_OBI, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
-						else if (saber1 && (saber1->type == SABER_BACKHAND || saber1->type == SABER_ASBACKHAND))
+						else if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND || saber1->type == SABER_SINGLE_ASBACKHAND))
 						{
 							PM_SetAnim(SETANIM_TORSO, BOTH_SABER_BACKHAND_IGNITION, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
@@ -12150,7 +12150,7 @@ void PM_FinishWeaponChange(void)
 						{
 							PM_SetAnim(SETANIM_TORSO, BOTH_SABERSTANCE_STANCE_ALT, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
-						else if (saber1 && (saber1->type == SABER_GRIE || saber1->type == SABER_GRIE4))
+						else if (saber1 && (saber1->type == SABER_DUAL_GRIE || saber1->type == SABER_DUAL_GRIE4))
 						{
 							PM_SetAnim(SETANIM_TORSO, BOTH_GRIEVOUS_SABERON, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
@@ -15799,8 +15799,8 @@ void PM_UpdateViewAngles(int saberAnimLevel, playerState_t* ps, const usercmd_t*
 						}
 						else if (saberAnimLevel == SS_STAFF)
 						{
-							if (saber1 && (saber1->type == SABER_BACKHAND
-								|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+							if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+								|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 							{
 								if (ps->torsoAnim == BOTH_BLOCK_HOLD_L_STAFF)
 								{
@@ -15851,8 +15851,8 @@ void PM_UpdateViewAngles(int saberAnimLevel, playerState_t* ps, const usercmd_t*
 						}
 						else if (saberAnimLevel == SS_STAFF)
 						{
-							if (saber1 && (saber1->type == SABER_BACKHAND
-								|| saber1->type == SABER_ASBACKHAND)) //saber backhand
+							if (saber1 && (saber1->type == SABER_SINGLE_BACKHAND
+								|| saber1->type == SABER_SINGLE_ASBACKHAND)) //saber backhand
 							{
 								if (ps->torsoAnim == BOTH_BLOCK_HOLD_R_STAFF)
 								{
@@ -18105,7 +18105,7 @@ static QINLINE void PM_CmdForSaberMoves(usercmd_t* ucmd)
 		case BOTH_H1_S1_B_:
 		case BOTH_H1_S1_BR:
 			//slight backwards stumble
-			if (bg_get_torso_anim_point(pm->ps, pm_entSelf->localAnimIndex) >= .5f)
+			if (BG_GetSelfTorsoAnimPoint(pm->ps, pm_entSelf->localAnimIndex) >= .5f)
 			{
 				//past the stumble part of the animation
 				ucmd->forwardmove = -46;
@@ -20448,6 +20448,9 @@ qboolean PM_ForceUsingSaberAnim(const int anim)
 	case BOTH_A5_SPECIAL:
 	case BOTH_GRIEVOUS_SPIN:
 	case BOTH_GRIEVOUS_PROTECT:
+	case BOTH_SMASHDOWN_SINGLE:
+	case BOTH_SMASHDOWN_STAFF:
+	case BOTH_SMASHDOWN_DUAL:
 	case BOTH_YODA_SPECIAL:
 	case BOTH_ARIAL_LEFT:
 	case BOTH_ARIAL_RIGHT:

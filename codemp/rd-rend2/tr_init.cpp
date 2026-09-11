@@ -335,7 +335,6 @@ static void R_Splash()
 		}
 	}
 
-
 	ri->WIN_Present(&window);
 }
 
@@ -692,7 +691,7 @@ Return value must be freed with ri->Hunk_FreeTempMemory()
 ==================
 */
 
-static byte* RB_ReadPixels(	int x, int y, int width, int height, size_t* offset, int* padlen)
+static byte* RB_ReadPixels(int x, int y, int width, int height, size_t* offset, int* padlen)
 {
 	byte* buffer, * bufstart;
 	int padwidth, linelen;

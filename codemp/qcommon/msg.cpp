@@ -1178,7 +1178,11 @@ netField_t entityStateFields[] =
 	{NETF(grapplelaststartTime), 32},
 	{NETF(modelindex), 32 },
 	{NETF(weaponfiredelaytime), 32 },
-	{NETF(reloadTime), 32 }
+	{NETF(reloadTime), 32 },
+
+	{NETF(SaberSmashStartTime), 32 },
+	{NETF(SaberSmashLastStartTime), 32 },
+	{NETF(Smash_Count), 32 }
 };
 
 // if (int)f == f and (int)f + ( 1<<(FLOAT_INT_BITS-1) ) < ( 1 << FLOAT_INT_BITS )
@@ -1729,7 +1733,11 @@ netField_t playerStateFields[] =
 
 	{PSF(grappletimeplayer), 32},
 	{PSF(grapplestartTime), 32},
-	{PSF(grapplelaststartTime), 32}
+	{PSF(grapplelaststartTime), 32},
+
+	{PSF(SaberSmashStartTime), 32 },
+	{PSF(SaberSmashLastStartTime), 32 },
+	{PSF(Smash_Count), 32 }
 };
 
 netField_t pilotPlayerStateFields[] =
@@ -1956,7 +1964,11 @@ netField_t pilotPlayerStateFields[] =
 
 	{PSF(grappletimeplayer), 32},
 	{PSF(grapplestartTime), 32},
-	{PSF(grapplelaststartTime), 32}
+	{PSF(grapplelaststartTime), 32},
+
+	{PSF(SaberSmashStartTime), 32 },
+	{PSF(SaberSmashLastStartTime), 32 },
+	{PSF(Smash_Count), 32 }
 };
 
 netField_t vehPlayerStateFields[] =
@@ -2091,7 +2103,11 @@ netField_t vehPlayerStateFields[] =
 
 	{PSF(grappletimeplayer), 32},
 	{PSF(grapplestartTime), 32},
-	{PSF(grapplelaststartTime), 32}
+	{PSF(grapplelaststartTime), 32},
+
+	{PSF(SaberSmashStartTime), 32 },
+	{PSF(SaberSmashLastStartTime), 32 },
+	{PSF(Smash_Count), 32 }
 };
 
 //=====_OPTIMIZED_VEHICLE_NETWORKING=======================================================================
@@ -2306,7 +2322,11 @@ netField_t	playerStateFields[] =
 
 { PSF(grappletimeplayer), 32 },
 { PSF(grapplestartTime), 32 },
-{ PSF(grapplelaststartTime), 32 }
+{ PSF(grapplelaststartTime), 32 },
+
+{ PSF(SaberSmashStartTime), 32 },
+{ PSF(SaberSmashLastStartTime), 32 },
+{ PSF(Smash_Count), 32 }
 };
 
 //=====_OPTIMIZED_VEHICLE_NETWORKING=======================================================================

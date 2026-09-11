@@ -11210,54 +11210,188 @@ static void CG_DrawHaqrBar(const float chX, const float chY, const float chW, co
 	CG_DrawPic(x, y - HACK_WIDTH, HACK_WIDTH, HACK_WIDTH, cgs.media.hackerIconShader);
 }
 
-//generic timing bar
+// ============================================================================
+// Generic Cooldown Timer Bar (SP-aligned)
+// ============================================================================
+
 int cg_genericTimerBar = 0;
 int cg_genericTimerDur = 0;
-vec4_t cg_genericTimerColor;
-#define CGTIMERBAR_H			50.0f
-#define CGTIMERBAR_W			10.0f
-#define CGTIMERBAR_X			(SCREEN_WIDTH-CGTIMERBAR_W-120.0f)
-#define CGTIMERBAR_Y			(SCREEN_HEIGHT-CGTIMERBAR_H-20.0f)
+vec4_t cg_genericTimerColor = { 1.0f, 1.0f, 0.0f, 0.4f };
+
+#define CGTIMERBAR_H 45.0f
+#define CGTIMERBAR_W 10.0f
+#define CGTIMERBAR_X (SCREEN_WIDTH - CGTIMERBAR_W - 120.0f)
+#define CGTIMERBAR_Y (SCREEN_HEIGHT - CGTIMERBAR_H - 20.0f)
 
 static void CG_DrawGenericTimerBar(void)
 {
-	vec4_t aColor = { 0 };
-	vec4_t cColor = { 0 };
+	vec4_t aColor = { cg_genericTimerColor[0], cg_genericTimerColor[1], cg_genericTimerColor[2], cg_genericTimerColor[3] };
+	vec4_t cColor = { 0.5f, 0.5f, 0.5f, 0.1f };
+
 	const float x = CGTIMERBAR_X;
 	const float y = CGTIMERBAR_Y;
-	float percent = (float)(cg_genericTimerBar - cg.time) / (float)cg_genericTimerDur * CGTIMERBAR_H;
+
+	float percent = ((float)(cg_genericTimerBar - cg.time) / (float)cg_genericTimerDur) * CGTIMERBAR_H;
 
 	if (percent > CGTIMERBAR_H)
 	{
 		return;
 	}
-
 	if (percent < 0.1f)
 	{
 		percent = 0.1f;
 	}
 
-	//color of the bar
-	aColor[0] = cg_genericTimerColor[0];
-	aColor[1] = cg_genericTimerColor[1];
-	aColor[2] = cg_genericTimerColor[2];
-	aColor[3] = cg_genericTimerColor[3];
-
-	//color of greyed out "missing fuel"
-	cColor[0] = 0.5f;
-	cColor[1] = 0.5f;
-	cColor[2] = 0.5f;
-	cColor[3] = 0.1f;
-
-	//draw the background (black)
 	CG_DrawRect(x, y, CGTIMERBAR_W, CGTIMERBAR_H, 1.0f, colorTable[CT_BLACK]);
 
-	//now draw the part to show how much health there is in the color specified
-	CG_FillRect(x + 1.0f, y + 1.0f + (CGTIMERBAR_H - percent), CGTIMERBAR_W - 2.0f,
-		CGTIMERBAR_H - 1.0f - (CGTIMERBAR_H - percent), aColor);
+	CG_FillRect(
+		x + 1.0f,
+		y + 1.0f + (CGTIMERBAR_H - percent),
+		CGTIMERBAR_W - 2.0f,
+		CGTIMERBAR_H - 1.0f - (CGTIMERBAR_H - percent),
+		aColor
+	);
 
-	//then draw the other part greyed out
-	CG_FillRect(x + 1.0f, y + 1.0f, CGTIMERBAR_W - 2.0f, CGTIMERBAR_H - percent, cColor);
+	CG_FillRect(
+		x + 1.0f,
+		y + 1.0f,
+		CGTIMERBAR_W - 2.0f,
+		CGTIMERBAR_H - percent,
+		cColor
+	);
+}
+
+// ============================================================================
+// SP Anchor for Right-Side Cooldown Bars
+// ============================================================================
+
+#define CG_COOLDOWN_RIGHT_X (SCREEN_WIDTH - CGTIMERBAR_W - 5.0f)
+#define CG_COOLDOWN_RIGHT_Y (SCREEN_HEIGHT * 0.65f)
+
+// ============================================================================
+// Dash Cooldown Timer Bar (Top bar, SP-aligned)
+// ============================================================================
+
+int cg_dashTimerBar = 0;
+int cg_dashTimerDur = 0;
+vec4_t cg_dashTimerColor = { 0.0f, 0.5f, 1.0f, 0.4f };
+
+#define CGDASHTIMERBAR_H CGTIMERBAR_H
+#define CGDASHTIMERBAR_W CGTIMERBAR_W
+#define CGDASHTIMERBAR_X CG_COOLDOWN_RIGHT_X
+#define CGDASHTIMERBAR_Y CG_COOLDOWN_RIGHT_Y
+
+static void CG_DrawDashTimerBar(void)
+{
+	vec4_t aColor = { cg_dashTimerColor[0], cg_dashTimerColor[1], cg_dashTimerColor[2], cg_dashTimerColor[3] };
+	vec4_t cColor = { 0.5f, 0.5f, 0.5f, 0.1f };
+
+	const float x = CGDASHTIMERBAR_X;
+	const float y = CGDASHTIMERBAR_Y;
+
+	float percent = ((float)(cg_dashTimerBar - cg.time) / (float)cg_dashTimerDur) * CGDASHTIMERBAR_H;
+
+	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR)
+	{
+		return;
+	}
+	if (cg.snap->ps.stats[STAT_HEALTH] <= 0)
+	{
+		return;
+	}
+	if (g_DrawCoolDown.integer == 0)
+	{
+		return;
+	}
+	if (percent > CGDASHTIMERBAR_H)
+	{
+		return;
+	}
+	if (percent < 0.1f)
+	{
+		percent = 0.1f;
+	}
+
+	CG_DrawRect(x, y, CGDASHTIMERBAR_W, CGDASHTIMERBAR_H, 1.0f, colorTable[CT_BLACK]);
+
+	CG_FillRect(
+		x + 1.0f,
+		y + 1.0f + (CGDASHTIMERBAR_H - percent),
+		CGDASHTIMERBAR_W - 2.0f,
+		CGDASHTIMERBAR_H - 1.0f - (CGDASHTIMERBAR_H - percent),
+		aColor
+	);
+
+	CG_FillRect(
+		x + 1.0f,
+		y + 1.0f,
+		CGDASHTIMERBAR_W - 2.0f,
+		CGDASHTIMERBAR_H - percent,
+		cColor
+	);
+}
+
+// ============================================================================
+// Slam Cooldown Timer Bar (Below dash bar, SP-aligned)
+// ============================================================================
+
+int cg_slamTimerBar = 0;
+int cg_slamTimerDur = 0;
+vec4_t cg_slamTimerColor = { 0.0f, 1.0f, 0.0f, 0.4f };
+
+#define CGSLAMTIMERBAR_H CGTIMERBAR_H
+#define CGSLAMTIMERBAR_W CGTIMERBAR_W
+#define CGSLAMTIMERBAR_X CG_COOLDOWN_RIGHT_X
+#define CGSLAMTIMERBAR_Y (CG_COOLDOWN_RIGHT_Y + CGTIMERBAR_H + 6.0f)
+
+static void CG_DrawSlamTimerBar(void)
+{
+	vec4_t aColor = { cg_slamTimerColor[0], cg_slamTimerColor[1], cg_slamTimerColor[2], cg_slamTimerColor[3] };
+	vec4_t cColor = { 0.5f, 0.5f, 0.5f, 0.1f };
+
+	const float x = CGSLAMTIMERBAR_X;
+	const float y = CGSLAMTIMERBAR_Y;
+
+	float percent = ((float)(cg_slamTimerBar - cg.time) / (float)cg_slamTimerDur) * CGSLAMTIMERBAR_H;
+
+	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR)
+	{
+		return;
+	}
+	if (cg.snap->ps.stats[STAT_HEALTH] <= 0)
+	{
+		return;
+	}
+	if (g_DrawCoolDown.integer == 0)
+	{
+		return;
+	}
+	if (percent > CGSLAMTIMERBAR_H)
+	{
+		return;
+	}
+	if (percent < 0.1f)
+	{
+		percent = 0.1f;
+	}
+
+	CG_DrawRect(x, y, CGSLAMTIMERBAR_W, CGSLAMTIMERBAR_H, 1.0f, colorTable[CT_BLACK]);
+
+	CG_FillRect(
+		x + 1.0f,
+		y + 1.0f + (CGSLAMTIMERBAR_H - percent),
+		CGSLAMTIMERBAR_W - 2.0f,
+		CGSLAMTIMERBAR_H - 1.0f - (CGSLAMTIMERBAR_H - percent),
+		aColor
+	);
+
+	CG_FillRect(
+		x + 1.0f,
+		y + 1.0f,
+		CGSLAMTIMERBAR_W - 2.0f,
+		CGSLAMTIMERBAR_H - percent,
+		cColor
+	);
 }
 
 /*
@@ -11832,12 +11966,6 @@ static void CG_DrawCrosshair(vec3_t world_point, const int ch_ent_valid)
 	if (cg.predictedPlayerState.hackingTime)
 	{//hacking something
 		CG_DrawHaqrBar(chX, chY - 50, w, h);
-	}
-
-	if (cg_genericTimerBar > cg.time)
-	{
-		//draw generic timing bar, can be used for whatever
-		CG_DrawGenericTimerBar();
 	}
 
 	if (corona) // drawing extra bits
@@ -15364,6 +15492,24 @@ static void CG_Draw2D(void)
 			CG_DrawPickupItem();
 			//Do we want to use this system again at some point?
 			//CG_DrawReward();
+
+			if (cg_genericTimerBar > cg.time)
+			{
+				//draw generic timing bar, can be used for whatever
+				CG_DrawGenericTimerBar();
+			}
+
+			if (cg_slamTimerBar > cg.time)
+			{
+				//draw slam timing bar, can be used for Saberslam coldown
+				CG_DrawSlamTimerBar();
+			}
+
+			if (cg_dashTimerBar > cg.time)
+			{
+				//draw dash timing bar, can be used for Dash cooldown
+				CG_DrawDashTimerBar();
+			}
 		}
 	}
 

@@ -68,7 +68,7 @@ extern void G_Stagger(gentity_t* hit_ent);
 extern void g_fatigue_bp_knockaway(gentity_t* blocker);
 extern qboolean PM_SuperBreakLoseAnim(int anim);
 extern qboolean WP_ButterFingers(gentity_t* saberent, gentity_t* saber_owner, const gentity_t* other, const trace_t* tr);
-extern qboolean pm_saber_innonblockable_attack(int anim);
+extern qboolean PM_SaberInnonblockableAttack(int anim);
 extern qboolean PM_SaberInSpecialAttack(int anim);
 extern int G_GetParryForBlock(int block);
 extern qboolean WP_SaberMBlockDirection(gentity_t* self, vec3_t hitloc, qboolean missileBlock);
@@ -887,7 +887,7 @@ qboolean sab_beh_attack_vs_block(
 	// ------------------------------------------------------------
 	// UNBLOCKABLE ATTACKS
 	// ------------------------------------------------------------
-	if (pm_saber_innonblockable_attack(attacker->client->ps.torsoAnim))
+	if (PM_SaberInnonblockableAttack(attacker->client->ps.torsoAnim))
 	{
 		// Perfect blocking vs unblockable
 		if (m_blocking)
@@ -1048,7 +1048,7 @@ qboolean sab_beh_attack_vs_block(
 			// Backup in case something was missed
 			if (!m_blocking)
 			{
-				if (pm_saber_innonblockable_attack(blocker->client->ps.torsoAnim))
+				if (PM_SaberInnonblockableAttack(blocker->client->ps.torsoAnim))
 				{
 					sab_beh_animate_heavy_slow_bounce_attacker(attacker);
 					sab_beh_add_balance(blocker, -MPCOST_PARRIED);
@@ -1115,7 +1115,7 @@ qboolean sab_beh_block_vs_attack(
 	// ------------------------------------------------------------
 	// NON‑UNBLOCKABLE ATTACKS
 	// ------------------------------------------------------------
-	if (!pm_saber_innonblockable_attack(attacker->client->ps.torsoAnim))
+	if (!PM_SaberInnonblockableAttack(attacker->client->ps.torsoAnim))
 	{
 		// --------------------------------------------------------
 		// LOW BP (<= 20)

@@ -2890,7 +2890,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 	{
 		return;
 	}
-	
+
 	if (ent->client->ps.weapon == WP_MELEE)
 	{
 		G_AddEvent(ent, EV_TAUNT, taunt);
@@ -2931,7 +2931,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 			G_AddEvent(ent, EV_TAUNT, taunt);
 
 			if (ent->client->ps.weapon == WP_SABER)
-		    {
+			{
 				if (ent->client->saber[0].tauntAnim != -1)
 				{
 					anim = ent->client->saber[0].tauntAnim;
@@ -2962,7 +2962,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_GESTURE1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						break;
 					case SS_MEDIUM:
-						if (saber1 && saber1->type == SABER_OBIWAN) //saber kylo
+						if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber kylo
 						{
 							NPC_SetAnim(ent, SETANIM_TORSO, BOTH_SHOWOFF_OBI, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
@@ -2973,7 +2973,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 						break;
 					case SS_STRONG:
 					case SS_DESANN:
-						if (saber1 && saber1->type == SABER_VADER || ent->client->pers.botclass == BCLASS_VADER) //saber kylo
+						if (saber1 && saber1->type == SABER_SINGLE_VADER || ent->client->pers.botclass == BCLASS_VADER) //saber kylo
 						{
 							NPC_SetAnim(ent, SETANIM_TORSO, BOTH_VADERTAUNT, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
@@ -2994,7 +2994,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 							G_Sound(ent, CHAN_WEAPON, ent->client->saber[0].soundOn);
 						}
 						ent->client->ps.saberHolstered = 0;
-						if (ent->client->saber[0].type == SABER_GRIE || ent->client->saber[0].type == SABER_GRIE4)
+						if (ent->client->saber[0].type == SABER_DUAL_GRIE || ent->client->saber[0].type == SABER_DUAL_GRIE4)
 						{
 							NPC_SetAnim(ent, SETANIM_TORSO, BOTH_STAFF_TAUNT, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
@@ -3247,7 +3247,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_SHOWOFF_FAST, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						break;
 					case SS_MEDIUM:
-						if (saber1 && saber1->type == SABER_OBIWAN) //saber kylo
+						if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber kylo
 						{
 							NPC_SetAnim(ent, SETANIM_TORSO, BOTH_SHOWOFF_OBI, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
@@ -3278,7 +3278,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_SHOWOFF_FAST, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						break;
 					case SS_MEDIUM:
-						if (saber1 && saber1->type == SABER_OBIWAN) //saber kylo
+						if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber kylo
 						{
 							NPC_SetAnim(ent, SETANIM_TORSO, BOTH_SHOWOFF_OBI, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 						}
@@ -3621,7 +3621,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 					NPC_SetAnim(ent, SETANIM_TORSO, BOTH_GESTURE1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 					break;
 				case SS_MEDIUM:
-					if (saber1 && saber1->type == SABER_OBIWAN) //saber kylo
+					if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber kylo
 					{
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_SHOWOFF_OBI,
 							SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
@@ -3634,7 +3634,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 					break;
 				case SS_STRONG:
 				case SS_DESANN:
-					if (saber1 && saber1->type == SABER_VADER || ent->client->pers.botclass == BCLASS_VADER) //saber kylo
+					if (saber1 && saber1->type == SABER_SINGLE_VADER || ent->client->pers.botclass == BCLASS_VADER) //saber kylo
 					{
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_VADERTAUNT, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 					}
@@ -3656,7 +3656,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 						G_Sound(ent, CHAN_WEAPON, ent->client->saber[0].soundOn);
 					}
 					ent->client->ps.saberHolstered = 0;
-					if (ent->client->saber[0].type == SABER_GRIE || ent->client->saber[0].type == SABER_GRIE4)
+					if (ent->client->saber[0].type == SABER_DUAL_GRIE || ent->client->saber[0].type == SABER_DUAL_GRIE4)
 					{
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_STAFF_TAUNT,
 							SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
@@ -3699,7 +3699,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 					NPC_SetAnim(ent, SETANIM_TORSO, BOTH_GESTURE1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 					break;
 				case SS_MEDIUM:
-					if (saber1 && saber1->type == SABER_OBIWAN) //saber kylo
+					if (saber1 && saber1->type == SABER_SINGLE_OBIWAN) //saber kylo
 					{
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_SHOWOFF_OBI,
 							SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
@@ -3712,7 +3712,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 					break;
 				case SS_STRONG:
 				case SS_DESANN:
-					if (saber1 && saber1->type == SABER_VADER || ent->client->pers.botclass == BCLASS_VADER) //saber kylo
+					if (saber1 && saber1->type == SABER_SINGLE_VADER || ent->client->pers.botclass == BCLASS_VADER) //saber kylo
 					{
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_VADERTAUNT, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 					}
@@ -3734,7 +3734,7 @@ void G_SetTauntAnim(gentity_t* ent, int taunt)
 						G_Sound(ent, CHAN_WEAPON, ent->client->saber[0].soundOn);
 					}
 					ent->client->ps.saberHolstered = 0;
-					if (ent->client->saber[0].type == SABER_GRIE || ent->client->saber[0].type == SABER_GRIE4)
+					if (ent->client->saber[0].type == SABER_DUAL_GRIE || ent->client->saber[0].type == SABER_DUAL_GRIE4)
 					{
 						NPC_SetAnim(ent, SETANIM_TORSO, BOTH_STAFF_TAUNT,
 							SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
@@ -5498,12 +5498,12 @@ static void ClientThink_real(gentity_t* ent)
 						{
 						}
 						else if (client->saber[0].type == SABER_STAFF
-							|| client->saber[0].type == SABER_BACKHAND
+							|| client->saber[0].type == SABER_SINGLE_BACKHAND
 							|| client->saber[0].type == SABER_STAFF_UNSTABLE
 							|| client->saber[0].type == SABER_STAFF_THIN
-							|| client->saber[0].type == SABER_ASBACKHAND
+							|| client->saber[0].type == SABER_SINGLE_ASBACKHAND
 							|| client->saber[0].type == SABER_STAFF_MAUL
-							|| client->saber[0].type == SABER_ELECTROSTAFF)
+							|| client->saber[0].type == SABER_STAFF_ELECTROSTAFF)
 						{
 							if (client->ps.saberHolstered == 2)
 							{
@@ -5527,12 +5527,12 @@ static void ClientThink_real(gentity_t* ent)
 							client->ps.saberHolstered = 0;
 						}
 						else if (client->saber[0].type == SABER_STAFF
-							|| client->saber[0].type == SABER_BACKHAND
+							|| client->saber[0].type == SABER_SINGLE_BACKHAND
 							|| client->saber[0].type == SABER_STAFF_UNSTABLE
 							|| client->saber[0].type == SABER_STAFF_THIN
-							|| client->saber[0].type == SABER_ASBACKHAND
+							|| client->saber[0].type == SABER_SINGLE_ASBACKHAND
 							|| client->saber[0].type == SABER_STAFF_MAUL
-							|| client->saber[0].type == SABER_ELECTROSTAFF)
+							|| client->saber[0].type == SABER_STAFF_ELECTROSTAFF)
 						{
 							if (client->ps.saberHolstered == 2)
 							{
@@ -5832,37 +5832,48 @@ static void ClientThink_real(gentity_t* ent)
 			client->ps.Dash_Count = 0;
 			client->ps.communicatingflags &= ~(1 << CF_DASHING);
 		}
-		if ((IsPressingDashButton(ent) == qtrue))
+		if ((client->ps.SaberSmashStartTime > level.time) ||
+			(client->ps.SaberSmashLastStartTime > level.time))
+		{
+			client->ps.SaberSmashStartTime = 0;
+			client->ps.SaberSmashLastStartTime = 0;
+			client->ps.Smash_Count = 0;
+			client->ps.communicatingflags &= ~(1 << CF_SABERSMASHING);
+		}
+		if (IsPressingDashButton(ent) == qtrue)
 		{
 			if (client->ps.Dash_Count < 2)
 			{
 				if ((client->ps.dashstartTime <= 0) &&
-					(level.time - client->ps.dashlaststartTime >= 100))
+					((level.time - client->ps.dashlaststartTime) >= 100))
 				{
 					client->ps.dashstartTime = level.time;
 					client->ps.dashlaststartTime = level.time;
 					client->ps.Dash_Count++;
 
 					// fire event when Dash_Count becomes 2
-					//if (client->ps.Dash_Count == 2)
-					//{
-					//	gentity_t* te = G_TempEntity(ent->client->ps.origin, EV_LOCALTIMER);
-					//	te->s.time = level.time;
-					//	te->s.time2 = 2500;
+					if (client->ps.Dash_Count == 2)
+					{
+						gentity_t* te = G_TempEntity(ent->client->ps.origin, EV_DASHTIMER);
+						te->s.time = level.time;
+						te->s.time2 = 2500;
 
-					//	// server-side owner pointer
-					//	te->owner = ent;
+						// server-side owner pointer
+						te->owner = ent;
 
-					//	// networked index for cgame
-					//	te->s.otherentityNum = ent->s.number;
-					//}
+						// networked index for cgame
+						te->s.otherentityNum = ent->s.number;
+
+						// ensure the updated entityState is linked so clients get the time/time2 and otherentityNum
+						trap->LinkEntity((sharedEntity_t*)te);
+					}
 
 					if ((client->ps.communicatingflags & (1 << CF_DASHING)) == 0)
 					{
 						client->ps.communicatingflags |= (1 << CF_DASHING);
 					}
 				}
-				else if (level.time - client->ps.dashlaststartTime >= 10)
+				else if ((level.time - client->ps.dashlaststartTime) >= 10)
 				{
 					client->ps.dashstartTime = 0;
 					client->ps.communicatingflags &= ~(1 << CF_DASHING);
@@ -5871,7 +5882,7 @@ static void ClientThink_real(gentity_t* ent)
 			else
 			{
 				if ((client->ps.dashstartTime <= 0) &&
-					(level.time - client->ps.dashlaststartTime >= 2500))
+					((level.time - client->ps.dashlaststartTime) >= 2500))
 				{
 					client->ps.dashstartTime = level.time;
 					client->ps.dashlaststartTime = level.time;
@@ -5881,11 +5892,73 @@ static void ClientThink_real(gentity_t* ent)
 						client->ps.communicatingflags |= (1 << CF_DASHING);
 					}
 				}
-				else if (level.time - client->ps.dashlaststartTime >= 2500)
+				else if ((level.time - client->ps.dashlaststartTime) >= 2500)
 				{
 					client->ps.dashstartTime = 0;
 					client->ps.Dash_Count = 0;
 					client->ps.communicatingflags &= ~(1 << CF_DASHING);
+				}
+			}
+		}
+		else if (client->ps.saberSmashTriggered == qtrue)
+		{
+			if (client->ps.Smash_Count < 1)
+			{
+				if ((client->ps.SaberSmashStartTime <= 0) &&
+					((level.time - client->ps.SaberSmashLastStartTime) >= 100))
+				{
+					client->ps.SaberSmashStartTime = level.time;
+					client->ps.SaberSmashLastStartTime = level.time;
+					client->ps.Smash_Count++;
+
+					// fire event when Smash_Count becomes 1
+					if (client->ps.Smash_Count == 1)
+					{
+						gentity_t* te = G_TempEntity(ent->client->ps.origin, EV_SLAMTIMER);
+						te->s.time = level.time;
+						te->s.time2 = SABER_SMASH_COOLDOWN_MS;
+
+						// server-side owner pointer
+						te->owner = ent;
+
+						// networked index for cgame
+						te->s.otherentityNum = ent->s.number;
+
+						// ensure the updated entityState is linked so clients get the time/time2 and otherentityNum
+						trap->LinkEntity((sharedEntity_t*)te);
+					}
+
+					if ((client->ps.communicatingflags & (1 << CF_SABERSMASHING)) == 0)
+					{
+						client->ps.communicatingflags |= (1 << CF_SABERSMASHING);
+					}
+				}
+				else if ((level.time - client->ps.SaberSmashLastStartTime) >= 10)
+				{
+					client->ps.SaberSmashStartTime = 0;
+					client->ps.communicatingflags &= ~(1 << CF_SABERSMASHING);
+				}
+			}
+			else
+			{
+				if ((client->ps.SaberSmashStartTime <= 0) &&
+					((level.time - client->ps.SaberSmashLastStartTime) >= SABER_SMASH_COOLDOWN_MS))
+				{
+					client->ps.SaberSmashStartTime = level.time;
+					client->ps.SaberSmashLastStartTime = level.time;
+
+					if ((client->ps.communicatingflags & (1 << CF_SABERSMASHING)) == 0)
+					{
+						client->ps.communicatingflags |= (1 << CF_SABERSMASHING);
+					}
+				}
+				else if ((level.time - client->ps.SaberSmashLastStartTime) >= SABER_SMASH_COOLDOWN_MS)
+				{
+					// cooldown fully finished: reset everything, including trigger
+					client->ps.SaberSmashStartTime = 0;
+					client->ps.Smash_Count = 0;
+					client->ps.communicatingflags &= ~(1 << CF_SABERSMASHING);
+					ent->client->ps.saberSmashTriggered = qfalse;
 				}
 			}
 		}
@@ -6025,6 +6098,7 @@ static void ClientThink_real(gentity_t* ent)
 			client->ps.communicatingflags &= ~(1 << CF_UNDERSIZEDJEDI);
 			client->ps.communicatingflags &= ~(1 << CF_OVERSIZEDGUNNER);
 			client->ps.communicatingflags &= ~(1 << CF_UNDERSIZEDGUNNER);
+			client->ps.communicatingflags &= ~(1 << CF_SABERSMASHING);
 			if (client->ps.weapon != WP_STUN_BATON ||
 				(client->ps.communicatingflags |= client->ps.grapplestartTime >= 3000))
 			{

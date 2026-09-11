@@ -1095,6 +1095,10 @@ struct gclient_s
 	// Tracks which entities have been hit in the current saber swing
 	int	saberHitEntityBitMask;
 	int	saberLastAttackSequence;
+
+	int SaberSmashStartTime;
+	int SaberSmashLastStartTime;
+	int Smash_Count;
 };
 
 //animations

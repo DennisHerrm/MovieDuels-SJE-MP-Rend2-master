@@ -6680,7 +6680,7 @@ tryTorso:
 
 		f = torsoAnim;
 
-		PM_SaberStartTransAnim(self->s.number, self->client->ps.fd.saberAnimLevel, self->client->ps.weapon, f, &animSpeedScale, self->client->ps.userInt3, self->client->ps.brokenLimbs);
+		PM_SaberStartTransAnim(self->s.number, self->client->ps.fd.saberAnimLevel, self->client->ps.weapon, f, &animSpeedScale, self->client->ps.userInt3);
 
 		animSpeed = 50.0f / bgAllAnims[self->localAnimIndex].anims[f].frameLerp;
 		lAnimSpeedScale = animSpeed *= animSpeedScale;
@@ -7091,8 +7091,8 @@ void ClientSpawn(gentity_t* ent)
 				newLevel++;
 				if (newLevel > SS_STAFF)
 				{
-					if (ent->client->saber[0].type == SABER_BACKHAND
-						|| ent->client->saber[0].type == SABER_ASBACKHAND)
+					if (ent->client->saber[0].type == SABER_SINGLE_BACKHAND
+						|| ent->client->saber[0].type == SABER_SINGLE_ASBACKHAND)
 					{
 						newLevel = SS_STAFF;
 					}
@@ -7136,11 +7136,11 @@ void ClientSpawn(gentity_t* ent)
 		if (!G_ValidSaberStyle(ent, ent->client->ps.fd.saberAnimLevel))
 		{
 			//had an illegal style, revert to default
-			if ((ent->client->saber[0].type == SABER_BACKHAND))
+			if ((ent->client->saber[0].type == SABER_SINGLE_BACKHAND))
 			{
 				ent->client->ps.fd.saberAnimLevel = SS_STAFF;
 			}
-			else if ((ent->client->saber[0].type == SABER_ASBACKHAND))
+			else if ((ent->client->saber[0].type == SABER_SINGLE_ASBACKHAND))
 			{
 				ent->client->ps.fd.saberAnimLevel = SS_STAFF;
 			}
@@ -7148,7 +7148,7 @@ void ClientSpawn(gentity_t* ent)
 			{
 				ent->client->ps.fd.saberAnimLevel = SS_STAFF;
 			}
-			else if ((ent->client->saber[0].type == SABER_ELECTROSTAFF))
+			else if ((ent->client->saber[0].type == SABER_STAFF_ELECTROSTAFF))
 			{
 				ent->client->ps.fd.saberAnimLevel = SS_STAFF;
 			}

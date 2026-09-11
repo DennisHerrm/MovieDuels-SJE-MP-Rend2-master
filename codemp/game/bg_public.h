@@ -64,7 +64,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define DEFAULT_REDTEAM_NAME	"Empire"
 #define DEFAULT_BLUETEAM_NAME	"Rebellion"
 
-#define CURRENT_MD_CLIENTVERSION		"Day-06,Month-09,Year-26,BuildNum-03" // build date
+#define CURRENT_MD_CLIENTVERSION		"Day-11,Month-09,Year-26,BuildNum-05" // build date
 
 #define	STEPSIZE		18
 
@@ -926,6 +926,7 @@ typedef enum {
 	EV_SABER_BLOCK,
 	EV_SABER_BODY_HIT,
 	EV_SABER_CLASHFLARE,
+	EV_SABER_SLAM,
 	EV_SABER_UNHOLSTER,
 	EV_BECOME_JEDIMASTER,
 	EV_DISRUPTOR_MAIN_SHOT,
@@ -943,6 +944,10 @@ typedef enum {
 	EV_BLOCKSHAKE,
 
 	EV_LOCALTIMER,
+
+	EV_SLAMTIMER,
+
+	EV_DASHTIMER,
 
 	EV_USE,			// +Use key
 
@@ -1500,9 +1505,12 @@ typedef enum {
 	LS_KICK_R_AIR,
 	LS_KICK_L_AIR,
 	LS_STABDOWN,
-	LS_STABDOWN_BACKHAND,
 	LS_STABDOWN_STAFF,
 	LS_STABDOWN_DUAL,
+	LS_STABDOWN_BACKHAND,
+	LS_SMASHDOWN_SINGLE,
+	LS_SMASHDOWN_STAFF,
+	LS_SMASHDOWN_DUAL,
 	LS_DUAL_SPIN_PROTECT,
 	LS_DUAL_SPIN_PROTECT_GRIE,
 	LS_STAFF_SOULCAL,
@@ -1743,9 +1751,10 @@ typedef enum
 typedef enum saberType_e
 {
 	SABER_NONE = 0,
-	SABER_SINGLE,
-	SABER_SINGLE_CLASSIC,
-	SABER_STAFF,
+	SABER_SINGLE, //Base Jka
+	SABER_STAFF,  //Base Jka
+	//Custom Jka Sabers
+
 	SABER_DAGGER,
 	SABER_BROAD,
 	SABER_PRONG,
@@ -1755,7 +1764,35 @@ typedef enum saberType_e
 	SABER_LANCE,
 	SABER_STAR,
 	SABER_TRIDENT,
-	SABER_SITH_SWORD,
+	SABER_SITH_SWORD,// Tavion sword
+	// custom Added sabers for specific animations
+	SABER_SINGLE_ANAKIN,
+	SABER_SINGLE_KENOBI,
+	SABER_SINGLE_KESTIS,
+	SABER_SINGLE_DARKFORCES,
+	SABER_SINGLE_DOOKU,
+	SABER_SINGLE_GALEN,
+	SABER_SINGLE_QUIGON,
+	SABER_DUAL_GRIE,
+	SABER_DUAL_GRIE4,
+	SABER_SINGLE_KOTOR,
+	SABER_SINGLE_LUKE,
+	SABER_SINGLE_WINDU,
+	SABER_SINGLE_MAUL,
+	SABER_STAFF_MAUL,
+	SABER_SINGLE_MOVIEDUELS,
+	SABER_SINGLE_OBIWAN,
+	SABER_SINGLE_PALP,
+	SABER_SINGLE_KYLO_REN,
+	SABER_SINGLE_REY,
+	SABER_SINGLE_VADER,
+	SABER_SINGLE_YODA,
+	// custom added sabers for specific models
+	SABER_SINGLE_BACKHAND,
+	SABER_SINGLE_ASBACKHAND,
+	SABER_STAFF_ELECTROSTAFF,
+	//Misc added sabers
+	SABER_SINGLE_CLASSIC,
 	SABER_UNSTABLE,
 	SABER_STAFF_UNSTABLE,
 	SABER_THIN,
@@ -1763,21 +1800,6 @@ typedef enum saberType_e
 	SABER_SFX,
 	SABER_STAFF_SFX,
 	SABER_CUSTOMSFX,
-	SABER_BACKHAND,
-	SABER_YODA,
-	SABER_DOOKU,
-	SABER_PALP,
-	SABER_ANAKIN,
-	SABER_GRIE,
-	SABER_GRIE4,
-	SABER_OBIWAN,
-	SABER_ASBACKHAND,
-	SABER_STAFF_MAUL,
-	SABER_ELECTROSTAFF,
-	SABER_WINDU,
-	SABER_VADER,
-	SABER_KENOBI,
-	SABER_REY,
 	NUM_SABERS
 } saberType_t;
 
@@ -1987,8 +2009,8 @@ void BG_G2ATSTAngles(void* ghoul2, int time, vec3_t cent_lerpAngles);
 //BG anim utility functions:
 
 int BG_AnimLength(int index, animNumber_t anim);
-float bg_get_torso_anim_point(const playerState_t* ps, int anim_index);
-float BG_GetLegsAnimPoint(const playerState_t* ps, int anim_index);
+float BG_GetSelfTorsoAnimPoint(const playerState_t* ps, const int animSetIndex);
+float BG_GetLegsAnimPoint(const playerState_t* ps, int animSetIndex);
 
 qboolean PM_InSpecialJump(int anim);
 qboolean PM_InSaberStandAnim(int anim);
@@ -2007,7 +2029,7 @@ qboolean PM_FlippingAnim(int anim);
 qboolean PM_SpinningSaberAnim(int anim);
 qboolean PM_SaberInSpecialAttack(int anim);
 qboolean PM_SaberInKata(saberMoveName_t saberMove);
-qboolean PM_InKataAnim(int anim);
+qboolean PM_InKataAnim(const int anim);
 qboolean PM_InKataBotDashDodgeAnim(const int anim);
 qboolean PM_KickingAnim(int anim);
 qboolean PM_PunchAnim(int anim);
@@ -2016,7 +2038,7 @@ qboolean BG_InDeathAnim(int anim);
 qboolean BG_InSaberLockOld(int anim);
 qboolean PM_InSaberLock(int anim);
 
-void PM_SaberStartTransAnim(const int clientNum, const int saberAnimLevel, const int weapon, const int anim, float* animSpeed, const int fatigued, const int broken);
+void PM_SaberStartTransAnim(const int clientNum, const int saberAnimLevel, const int weapon, const int anim, float* animSpeed, const int fatigued);
 
 void WP_ForcePowerDrain(playerState_t* ps, forcePowers_t force_power, int override_amt);
 void BG_ForcePowerKill(playerState_t* ps);

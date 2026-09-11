@@ -1536,7 +1536,7 @@ INACTIVE	must be used by a target_activate before it can be used
 */
 void SP_func_door(gentity_t* ent)
 {
-	vec3_t abs_movedir = {0};
+	vec3_t abs_movedir = { 0 };
 	vec3_t size;
 	float lip;
 
@@ -1691,7 +1691,7 @@ not just sit on top of it.
 */
 static void SpawnPlatTrigger(gentity_t* ent)
 {
-	vec3_t tmin = {0}, tmax = {0};
+	vec3_t tmin = { 0 }, tmax = { 0 };
 
 	// the middle trigger will be a thin trigger just
 	// above the starting position
@@ -1830,7 +1830,7 @@ When a button is touched, it moves some distance in the direction of it's angle,
 */
 void SP_func_button(gentity_t* ent)
 {
-	vec3_t abs_movedir = {0};
+	vec3_t abs_movedir = { 0 };
 	vec3_t size;
 	float lip;
 
@@ -3116,7 +3116,7 @@ GLASS
 */
 static void GlassDie(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int damage, int mod)
 {
-	vec3_t dif = {0};
+	vec3_t dif = { 0 };
 
 	if (self->genericValue5)
 	{
@@ -3146,7 +3146,7 @@ static void GlassDie(gentity_t* self, gentity_t* inflictor, gentity_t* attacker,
 
 static void GlassDie_Old(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int damage, int mod)
 {
-	vec3_t dif = {0};
+	vec3_t dif = { 0 };
 
 	dif[0] = (self->r.absmax[0] + self->r.absmin[0]) / 2;
 	dif[1] = (self->r.absmax[1] + self->r.absmin[1]) / 2;

@@ -1243,7 +1243,6 @@ static qboolean NPC_SpotWouldTelefrag(const gentity_t* npc)
 	return qfalse;
 }
 
-
 extern qboolean G_ValidSaberStyle(const gentity_t* ent, int saber_style);
 extern qboolean WP_SaberCanTurnOffSomeBlades(const saberInfo_t* saber);
 //--------------------------------------------------------------
@@ -1590,8 +1589,8 @@ void NPC_Begin(gentity_t* ent)
 				newLevel++;
 				if (newLevel > SS_STAFF)
 				{
-					if (ent->client->saber[0].type == SABER_BACKHAND
-						|| ent->client->saber[0].type == SABER_ASBACKHAND)
+					if (ent->client->saber[0].type == SABER_SINGLE_BACKHAND
+						|| ent->client->saber[0].type == SABER_SINGLE_ASBACKHAND)
 					{
 						newLevel = SS_STAFF;
 					}

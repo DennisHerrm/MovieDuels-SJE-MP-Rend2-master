@@ -58,12 +58,15 @@ extern qboolean manual_saberreadyanim(int anim);
 extern qboolean PM_SaberStanceAnim(int anim);
 extern qboolean PM_RunningAnim(int anim);
 extern qboolean PM_WindAnim(int anim);
-extern qboolean PM_InKataAnim(int anim);
+extern qboolean PM_InKataAnim(const int anim);
 extern qboolean PM_StandingAtReadyAnim(int anim);
 extern qboolean PM_WalkingOrRunningAnim(int anim);
-extern qboolean pm_saber_innonblockable_attack(int anim);
+extern qboolean PM_SaberInnonblockableAttack(int anim);
 extern qboolean PM_SuperBreakWinAnim(int anim);
 extern qboolean G_DrawSaberTrailForAnimation(int anim);
+extern qboolean PM_SaberInTransitionDamageMove(const playerState_t* ps);
+extern qboolean PM_SaberInNonIdleDamageMove(const playerState_t* ps, int AnimIndex);
+extern qboolean BG_SaberInPartialDamageMove(const playerState_t* ps, const int AnimIndex);
 
 #define MIN_SABERBLADE_DRAW_LENGTH 0.5f
 
@@ -3380,7 +3383,7 @@ static void CG_SetLerpFrameAnimation(centity_t* cent, clientInfo_t* ci, lerpFram
 
 		animSpeed *= anim_speed_mult;
 
-		PM_SaberStartTransAnim(cent->currentState.number, cent->currentState.fireflag, cent->currentState.weapon, new_animation, &animSpeed, cent->currentState.userInt3, cent->currentState.brokenLimbs);
+		PM_SaberStartTransAnim(cent->currentState.number, cent->currentState.fireflag, cent->currentState.weapon, new_animation, &animSpeed, cent->currentState.userInt3);
 
 		if (torso_only)
 		{
@@ -13393,7 +13396,7 @@ CheckTrail:
 								}
 								else if (client->saber[saberNum].type == SABER_UNSTABLE
 									|| client->saber[saberNum].type == SABER_STAFF_UNSTABLE
-									|| client->saber[saberNum].type == SABER_ELECTROSTAFF)
+									|| client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 								{
 									fx.mShader = cgs.media.unstableBlurShader;
 									trail_dur = trail_dur / 2.0f;   // SP: stay around twice as long
@@ -13694,7 +13697,7 @@ JustDoIt:
 			if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 				client->saber[saberNum].type == SABER_UNSTABLE ||
 				client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-				client->saber[saberNum].type == SABER_ELECTROSTAFF)
+				client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 			{
 				CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 					client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -13738,7 +13741,7 @@ JustDoIt:
 				if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 					client->saber[saberNum].type == SABER_UNSTABLE ||
 					client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-					client->saber[saberNum].type == SABER_ELECTROSTAFF)
+					client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 				{
 					CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 						client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -13758,7 +13761,7 @@ JustDoIt:
 				if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 					client->saber[saberNum].type == SABER_UNSTABLE ||
 					client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-					client->saber[saberNum].type == SABER_ELECTROSTAFF)
+					client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 				{
 					CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 						client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -13778,7 +13781,7 @@ JustDoIt:
 				if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 					client->saber[saberNum].type == SABER_UNSTABLE ||
 					client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-					client->saber[saberNum].type == SABER_ELECTROSTAFF)
+					client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 				{
 					CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 						client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -13798,7 +13801,7 @@ JustDoIt:
 				if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 					client->saber[saberNum].type == SABER_UNSTABLE ||
 					client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-					client->saber[saberNum].type == SABER_ELECTROSTAFF)
+					client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 				{
 					CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 						client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -13818,7 +13821,7 @@ JustDoIt:
 				if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 					client->saber[saberNum].type == SABER_UNSTABLE ||
 					client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-					client->saber[saberNum].type == SABER_ELECTROSTAFF)
+					client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 				{
 					CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 						client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -13838,7 +13841,7 @@ JustDoIt:
 				if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 					client->saber[saberNum].type == SABER_UNSTABLE ||
 					client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-					client->saber[saberNum].type == SABER_ELECTROSTAFF)
+					client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 				{
 					CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 						client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -13858,7 +13861,7 @@ JustDoIt:
 				if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 					client->saber[saberNum].type == SABER_UNSTABLE ||
 					client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-					client->saber[saberNum].type == SABER_ELECTROSTAFF)
+					client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 				{
 					CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 						client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -13878,7 +13881,7 @@ JustDoIt:
 				if (cent->currentState.botclass == BCLASS_UNSTABLESABER ||
 					client->saber[saberNum].type == SABER_UNSTABLE ||
 					client->saber[saberNum].type == SABER_STAFF_UNSTABLE ||
-					client->saber[saberNum].type == SABER_ELECTROSTAFF)
+					client->saber[saberNum].type == SABER_STAFF_ELECTROSTAFF)
 				{
 					CG_DoSaberUnstable(org, axis[0], saber_len, client->saber[saberNum].blade[bladeNum].lengthMax,
 						client->saber[saberNum].blade[bladeNum].radius, scolor, renderfx,
@@ -15868,7 +15871,7 @@ Based On:  G_GetAnimPoint
 //Get the point in the torso animation and return a percentage of the current point in the anim between 0 and the total anim length (0.0f - 1.0f)
 static float GetSelfTorsoAnimPoint()
 {
-	return bg_get_torso_anim_point(&cg.predictedPlayerState,
+	return BG_GetSelfTorsoAnimPoint(&cg.predictedPlayerState,
 		cg_entities[cg.predictedPlayerState.clientNum].localAnimIndex);
 }
 
@@ -21402,18 +21405,83 @@ stillDoSaber:
 
 	if (cent->currentState.number != cg.snap->ps.clientNum)
 	{
-		if (cg_SaberInnonblockableAttackWarning.integer)
+		if (g_SaberInnonblockableAttackWarning.integer == 1)
 		{
-			if (pm_saber_innonblockable_attack(cent->currentState.torsoAnim) && !(cent->currentState.powerups & 1 <<
-				PW_CLOAKED))
+			if (PM_SaberInnonblockableAttack(cent->currentState.torsoAnim) && !(cent->currentState.powerups & 1 << PW_CLOAKED))
 			{
-				legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
-				legs.renderfx &= ~RF_MINLIGHT;
-
 				legs.renderfx |= RF_RGB_TINT;
 				legs.shaderRGBA[0] = 255;
 				legs.shaderRGBA[1] = legs.shaderRGBA[2] = 0;
 				legs.shaderRGBA[3] = 255;
+
+				trap->R_AddRefEntityToScene(&legs);
+			}
+		}
+	}
+
+	// Local player: saber damage coloring (blue = partial, red = full)
+	if (cent->currentState.number == cg.snap->ps.clientNum)
+	{	
+		if (g_IsSaberDoingAttackDamage.integer == 1)
+		{
+			qboolean doTint = qfalse;
+			qboolean tintBlue = qfalse;
+			qboolean tintRed = qfalse;
+			qboolean tintGreen = qfalse;
+
+			// 1. Transitional damage window → BLUE
+			if (PM_SaberInTransitionDamageMove(&cg.snap->ps) == qtrue)
+			{
+				doTint = qtrue;
+				tintGreen = qtrue;
+			}
+			else
+			{
+				// 2. Non‑idle damage moves
+				if (PM_SaberInNonIdleDamageMove(&cg.snap->ps, 0) == qtrue)
+				{
+					// 2a. Partial damage window → BLUE
+					if (BG_SaberInPartialDamageMove(&cg.snap->ps, 0) == qtrue)
+					{
+						doTint = qtrue;
+						tintBlue = qtrue;
+					}
+					else
+					{
+						// 2b. Full damage window → RED
+						doTint = qtrue;
+						tintRed = qtrue;
+					}
+				}
+			}
+
+			// Apply tint if needed
+			if (doTint == qtrue)
+			{
+				legs.renderfx |= RF_RGB_TINT;
+
+				if (tintGreen == qtrue)
+				{
+					// GREEN tint
+					legs.shaderRGBA[0] = 0;     // R
+					legs.shaderRGBA[1] = 255;   // G
+					legs.shaderRGBA[2] = 0;     // B
+					legs.shaderRGBA[3] = 255;   // A
+				}
+				else if (tintBlue == qtrue)
+				{// BLUE tint (partial damage)
+					legs.shaderRGBA[0] = 0;
+					legs.shaderRGBA[1] = 0;
+					legs.shaderRGBA[2] = 255;
+					legs.shaderRGBA[3] = 255;
+				}
+				else if (tintRed == qtrue)
+				{// RED tint (full damage)
+					legs.shaderRGBA[0] = 255;
+					legs.shaderRGBA[1] = 0;
+					legs.shaderRGBA[2] = 0;
+					legs.shaderRGBA[3] = 255;
+				}
 
 				trap->R_AddRefEntityToScene(&legs);
 			}

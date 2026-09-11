@@ -343,7 +343,6 @@ static void TransitionBetweenState(void)
 	}
 }
 
-
 //ported from SP
 void G_DynamicMusicUpdate(void)
 {

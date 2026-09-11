@@ -39,11 +39,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // Current version of the multi player game
 
 #define VERSION_MAJOR_RELEASE		26  // Build year
-#define VERSION_MINOR_RELEASE		08  // Build month
-#define VERSION_INTERNAL_BUILD		03  // Build number
+#define VERSION_MINOR_RELEASE		09  // Build month
+#define VERSION_INTERNAL_BUILD		05  // Build number
 
-#define VERSION_STRING				"Day-06,Month-09,Year-26,BuildNum-03" // build date
-#define VERSION_STRING_DOTTED		"Day-06.Month-09.Year-26.BuildNum-03" // build date
+#define VERSION_STRING				"Day-11,Month-09,Year-26,BuildNum-05" // build date
+#define VERSION_STRING_DOTTED		"Day-11.Month-09.Year-26.BuildNum-05" // build date
 #if defined(_DEBUG)
 #define	JK_VERSION		"(debug)MovieDuels-MP-Default: " VERSION_STRING_DOTTED
 #define JK_VERSION_OLD	"(debug)MovieDuels-MP-Default: " VERSION_STRING_DOTTED

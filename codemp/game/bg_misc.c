@@ -3526,6 +3526,7 @@ const char* eventnames[] = {
 	"EV_SABER_BLOCK",
 	"EV_SABER_BODY_HIT",
 	"EV_SABER_CLASHFLARE",
+	"EV_SABER_SLAM",
 	"EV_SABER_UNHOLSTER",
 	"EV_BECOME_JEDIMASTER",
 	"EV_DISRUPTOR_MAIN_SHOT",
@@ -3543,6 +3544,10 @@ const char* eventnames[] = {
 	"EV_BLOCKSHAKE",
 
 	"EV_LOCALTIMER",
+
+	"EV_SLAMTIMER",
+
+	"EV_DASHTIMER",
 
 	"EV_USE", // +Use key
 
@@ -4054,6 +4059,10 @@ void BG_PlayerStateToEntityState(playerState_t* ps, entityState_t* s, const qboo
 
 	s->PlayerEffectFlags = ps->PlayerEffectFlags;
 
+	s->SaberSmashStartTime = ps->SaberSmashStartTime;
+	s->SaberSmashLastStartTime = ps->SaberSmashLastStartTime;
+	s->Smash_Count = ps->Smash_Count;
+
 	s->powerups = 0;
 	for (int i = 0; i < MAX_POWERUPS; i++)
 	{
@@ -4265,6 +4274,10 @@ void BG_PlayerStateToEntityStateExtraPolate(playerState_t* ps, entityState_t* s,
 	s->frozenTime = ps->frozenTime;
 
 	s->PlayerEffectFlags = ps->PlayerEffectFlags;
+
+	s->SaberSmashStartTime = ps->SaberSmashStartTime;
+	s->SaberSmashLastStartTime = ps->SaberSmashLastStartTime;
+	s->Smash_Count = ps->Smash_Count;
 
 	s->powerups = 0;
 	for (int i = 0; i < MAX_POWERUPS; i++)
