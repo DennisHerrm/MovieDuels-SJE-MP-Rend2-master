@@ -2807,6 +2807,16 @@ static void UI_SaberDrawBlade(itemDef_t* item, const char* saber_name, int saber
 		case SABER_THIN:
 		case SABER_SFX:
 		case SABER_CUSTOMSFX:
+			//Old saber names for compatibility with old saves
+		case SABER_GRIE:
+		case SABER_GRIE4:
+		case SABER_BACKHAND:
+		case SABER_YODA:
+		case SABER_DOOKU:
+		case SABER_PALP:
+		case SABER_ANAKIN:
+		case SABER_OBIWAN:
+		case SABER_ASBACKHAND:
 			VectorMA(bladeOrigin, scale, axis[0], bladeOrigin);
 			break;
 		case SABER_DAGGER:

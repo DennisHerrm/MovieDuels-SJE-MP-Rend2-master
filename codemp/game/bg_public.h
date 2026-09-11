@@ -64,7 +64,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define DEFAULT_REDTEAM_NAME	"Empire"
 #define DEFAULT_BLUETEAM_NAME	"Rebellion"
 
-#define CURRENT_MD_CLIENTVERSION		"Day-11,Month-09,Year-26,BuildNum-05" // build date
+#define CURRENT_MD_CLIENTVERSION		"Day-11,Month-09,Year-26,BuildNum-06" // build date
 
 #define	STEPSIZE		18
 
@@ -1800,6 +1800,21 @@ typedef enum saberType_e
 	SABER_SFX,
 	SABER_STAFF_SFX,
 	SABER_CUSTOMSFX,
+	//Old saber names for compatibility with old saves
+	SABER_BACKHAND,
+	SABER_YODA,
+	SABER_DOOKU,
+	SABER_PALP,
+	SABER_ANAKIN,
+	SABER_GRIE,
+	SABER_GRIE4,
+	SABER_OBIWAN,
+	SABER_ASBACKHAND,
+	SABER_ELECTROSTAFF,
+	SABER_WINDU,
+	SABER_VADER,
+	SABER_KENOBI,
+	SABER_REY,
 	NUM_SABERS
 } saberType_t;
 

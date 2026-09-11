@@ -115,6 +115,22 @@ stringID_table_t saberTable[] =
 	ENUM2STRING(SABER_SFX),
 	ENUM2STRING(SABER_STAFF_SFX),
 	ENUM2STRING(SABER_CUSTOMSFX),
+	//Old saber names for compatibility with old saves
+	ENUM2STRING(SABER_BACKHAND),
+	ENUM2STRING(SABER_YODA),
+	ENUM2STRING(SABER_DOOKU),
+	ENUM2STRING(SABER_PALP),
+	ENUM2STRING(SABER_ANAKIN),
+	ENUM2STRING(SABER_GRIE),
+	ENUM2STRING(SABER_GRIE4),
+	ENUM2STRING(SABER_OBIWAN),
+	ENUM2STRING(SABER_ASBACKHAND),
+	ENUM2STRING(SABER_STAFF_MAUL),
+	ENUM2STRING(SABER_ELECTROSTAFF),
+	ENUM2STRING(SABER_WINDU),
+	ENUM2STRING(SABER_VADER),
+	ENUM2STRING(SABER_KENOBI),
+	ENUM2STRING(SABER_REY),
 	{"", -1}
 };
 
@@ -663,6 +679,63 @@ saberType_t TranslateSaberType(const char* name)
 	if (!Q_stricmp(name, "SABER_CUSTOMSFX"))
 	{
 		return SABER_CUSTOMSFX;
+	}
+	//Old saber names for compatibility with old saves
+	if (!Q_stricmp(name, "SABER_BACKHAND"))
+	{
+		return SABER_BACKHAND;
+	}
+	if (!Q_stricmp(name, "SABER_YODA"))
+	{
+		return SABER_YODA;
+	}
+	if (!Q_stricmp(name, "SABER_DOOKU"))
+	{
+		return SABER_DOOKU;
+	}
+	if (!Q_stricmp(name, "SABER_PALP"))
+	{
+		return SABER_PALP;
+	}
+	if (!Q_stricmp(name, "SABER_ANAKIN"))
+	{
+		return SABER_ANAKIN;
+	}
+	if (!Q_stricmp(name, "SABER_GRIE"))
+	{
+		return SABER_GRIE;
+	}
+	if (!Q_stricmp(name, "SABER_GRIE4"))
+	{
+		return SABER_GRIE4;
+	}
+	if (!Q_stricmp(name, "SABER_OBIWAN"))
+	{
+		return SABER_OBIWAN;
+	}
+	if (!Q_stricmp(name, "SABER_ASBACKHAND"))
+	{
+		return SABER_ASBACKHAND;
+	}
+	if (!Q_stricmp(name, "SABER_ELECTROSTAFF"))
+	{
+		return SABER_ELECTROSTAFF;
+	}
+	if (!Q_stricmp(name, "SABER_WINDU"))
+	{
+		return SABER_WINDU;
+	}
+	if (!Q_stricmp(name, "SABER_VADER"))
+	{
+		return SABER_VADER;
+	}
+	if (!Q_stricmp(name, "SABER_KENOBI"))
+	{
+		return SABER_KENOBI;
+	}
+	if (!Q_stricmp(name, "SABER_REY"))
+	{
+		return SABER_REY;
 	}
 	return SABER_SINGLE;
 }

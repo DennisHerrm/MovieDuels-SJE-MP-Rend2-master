@@ -343,7 +343,7 @@ static qboolean UI_IsHumanoidPath(const char* path)
 
 	return qfalse;
 }
-static char UIPAFtext[120000];
+static char UIPAFtext[200000];
 
 int UI_ParseAnimationFile(const char* filename, animation_t* animset, qboolean is_humanoid)
 {
@@ -1651,7 +1651,7 @@ void UI_LoadMenus(const char* menuFile, const qboolean reset)
 	Com_Printf("-----------------------------------------------------------------\n");
 	Com_Printf("-------------------------- Update 8.0 ---------------------------\n");
 	Com_Printf("--------------------- Build Date 11/09/2026 ---------------------\n");// build date
-	Com_Printf("--------------------------- Build 05 ----------------------------\n");
+	Com_Printf("--------------------------- Build 06 ----------------------------\n");
 	Com_Printf("-----------------------------------------------------------------\n");
 	Com_Printf("-------------------------- Lightsaber ---------------------------\n");
 	Com_Printf("---------- An elegant weapon for a more civilized age -----------\n");
