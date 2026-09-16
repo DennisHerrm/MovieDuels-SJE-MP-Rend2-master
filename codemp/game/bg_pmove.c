@@ -4150,29 +4150,33 @@ static void PM_SetVelocityforLedgeMove(playerState_t* ps, const int anim)
 		}
 		break;
 	case BOTH_LEDGE_MERCPULL:
-		if (animationpoint > .8 && animationpoint < .925)
+		if (animationpoint > 0.8f && animationpoint < 0.925f)
 		{
-			ps->velocity[0] = 0;
-			ps->velocity[1] = 0;
-			ps->velocity[2] = 154;
+			vec3_t fwdAngles;
+			VectorSet(fwdAngles, 0.0f, pm->ps->viewangles[YAW], 0);
+			AngleVectors(fwdAngles, moveDir, NULL, NULL);  // moveDir is forward (z ≈ 0)
+			VectorScale(moveDir, 70.0f, moveDir);         // small forward nudge (tweak 30.0f)
+			ps->velocity[0] = moveDir[0];
+			ps->velocity[1] = moveDir[1];
+			ps->velocity[2] = 154.0f;                      // keep upward velocity
 		}
-		else if (animationpoint > .7 && animationpoint < .75)
+		else if (animationpoint > .7f && animationpoint < .75f)
 		{
-			ps->velocity[0] = 0;
-			ps->velocity[1] = 0;
-			ps->velocity[2] = 26;
+			ps->velocity[0] = 0.0f;
+			ps->velocity[1] = 0.0f;
+			ps->velocity[2] = 26.0f;
 		}
 		else if (animationpoint > .375 && animationpoint < .7)
 		{
-			ps->velocity[0] = 0;
-			ps->velocity[1] = 0;
-			ps->velocity[2] = 140;
+			ps->velocity[0] = 0.0f;
+			ps->velocity[1] = 0.0f;
+			ps->velocity[2] = 140.0f;
 		}
 		else if (animationpoint < .375)
 		{
-			VectorSet(fwdAngles, 0, pm->ps->viewangles[YAW], 0);
-			AngleVectors(fwdAngles, moveDir, NULL, NULL);
-			VectorScale(moveDir, 140, moveDir);
+			VectorSet(fwdAngles, 0.0f, pm->ps->viewangles[YAW], 0);
+			AngleVectors(fwdAngles, NULL, NULL, moveDir);
+			VectorScale(moveDir, 200.0f, moveDir);
 			VectorCopy(moveDir, ps->velocity);
 		}
 		else
@@ -6205,6 +6209,7 @@ static void PM_CheckGrab(void)
 	{
 		if (PM_IsGunner() == qtrue)
 		{
+			pm->ps->weapon = WP_MELEE;
 #ifdef _GAME
 			gentity_t* self = &g_entities[pm->ps->clientNum];
 			G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));

@@ -120,6 +120,7 @@ extern qboolean IsCowering(const gentity_t* self);
 extern qboolean IsAnimRequiresResponce(const gentity_t* self);
 qboolean G_ThereIsAMaster(void);
 void bot_behave_attack_move(bot_state_t* bs);
+extern qboolean PM_SaberInSmashdown(saberMoveName_t saberMove);
 
 //rww - new bot cvars..
 vmCvar_t bot_forcepowers;
@@ -8965,13 +8966,19 @@ static qboolean bot_behave_check_backstab(bot_state_t* bs)
 // ------------------------------------------------------------------
 // Smart kata decision: bots kata when enemy is weak or vulnerable
 // ------------------------------------------------------------------
-static qboolean bot_behave_check_use_kata(const bot_state_t* bs)
+static qboolean bot_behave_check_use_kata(bot_state_t* bs)
 {
 	// Must be using a saber
 	if (bs->cur_ps.weapon != WP_SABER)
 	{
 		return qfalse;
 	}
+
+	// BOT SMASHDOWN COOLDOWN CHECK
+	// If bot is still in smashdown cooldown, do NOT allow smashdown.
+	// Bot may still do normal kata.
+	const qboolean smashdownCooling =
+		(bs->SmashdownTryTime > level.time) ? qtrue : qfalse;
 
 	vec3_t forward, cur_org, end_org;
 	trace_t tr;
@@ -9044,13 +9051,36 @@ static qboolean bot_behave_check_use_kata(const bot_state_t* bs)
 	// Add a small random chance so bots don't kata every frame
 	if (shouldKata && Q_irand(0, 4) == 0) // 20% chance
 	{
+		// Bot tries kata
 		trap->EA_Attack(bs->client);
 		trap->EA_Alt_Attack(bs->client);
+
+		// Check what kata actually happened
+		if (PM_SaberInSmashdown(bs->cur_ps.saberMove))
+		{
+			// If bot is allowed to smashdown
+			if (smashdownCooling == qfalse)
+			{
+				// Count smashdown
+				bs->SmashdownTryCount++;
+
+				// Set cooldown (30 seconds)
+				bs->SmashdownTryTime = level.time + 30000;
+			}
+			else
+			{
+				// Bot is in cooldown → force normal kata instead
+				// We simply do nothing here; PM_KataAnimationStyle will
+				// fall back to normal kata because smashdown is blocked.
+			}
+		}
+
 		return qtrue;
 	}
 
 	return qfalse;
 }
+
 
 static qboolean bot_behave_check_use_crouch_attack(bot_state_t* bs)
 {

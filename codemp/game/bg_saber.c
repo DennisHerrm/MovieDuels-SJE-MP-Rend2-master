@@ -101,6 +101,8 @@ qboolean PM_Can_Do_Kill_Lunge_back(void);
 int PM_SaberBackflipAttackMove(void);
 saberMoveName_t PM_NPC_Force_Leap_Attack(void);
 extern qboolean PM_SaberInnonblockableAttack(int anim);
+extern qboolean PM_SaberInSmashdown(saberMoveName_t saberMove);
+
 
 int PM_irand_timesync(const int val1, const int val2)
 {
@@ -5213,7 +5215,7 @@ static void PM_KataAnimationStyle(void)
 		return;
 	}
 
-	const int saberOffenseLevel = pm->ps->fd.forcePowerLevel[FP_SABER_OFFENSE];
+	const int saberOffenseLevel = pm->ps->fd.forcePowerLevel[FP_PUSH];
 	const int forceCurrent = pm->ps->fd.forcePower;
 	const int forceMax = pm->ps->fd.forcePowerMax;
 	const qboolean hasEnoughForce = (forceCurrent >= (int)(forceMax * 0.95f)) ? qtrue : qfalse;
@@ -5408,7 +5410,14 @@ static void PM_KataAnimationStyle(void)
 
 		if (pm->ps)
 		{
-			WP_ForcePowerDrain(pm->ps, FP_SABER_OFFENSE, SABER_ALT_ATTACK_POWER);
+			if (PM_SaberInSmashdown(pm->ps->saberMove))
+			{
+				WP_ForcePowerDrain(pm->ps, FP_PUSH, SABER_KATA_ATTACK_POWER);
+			}
+			else
+			{
+				WP_ForcePowerDrain(pm->ps, FP_PUSH, SABER_ALT_ATTACK_POWER);
+			}
 		}
 	}
 	else if (overrideMove != LS_NONE)
@@ -5418,7 +5427,14 @@ static void PM_KataAnimationStyle(void)
 
 		if (pm->ps)
 		{
-			WP_ForcePowerDrain(pm->ps, FP_SABER_OFFENSE, SABER_ALT_ATTACK_POWER);
+			if (PM_SaberInSmashdown(pm->ps->saberMove))
+			{
+				WP_ForcePowerDrain(pm->ps, FP_PUSH, SABER_KATA_ATTACK_POWER);
+			}
+			else
+			{
+				WP_ForcePowerDrain(pm->ps, FP_PUSH, SABER_ALT_ATTACK_POWER);
+			}
 		}
 	}
 	if (overrideMove != LS_NONE)

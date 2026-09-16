@@ -529,6 +529,23 @@ qboolean PM_SaberInKata(const saberMoveName_t saberMove)
 	return qfalse;
 }
 
+qboolean PM_SaberInSmashdown(const saberMoveName_t saberMove)
+{
+	switch (saberMove)
+	{
+	//case LS_STABDOWN_WINDU:
+		///////////////////////////////////////////
+	case LS_SMASHDOWN_DUAL:
+	case LS_SMASHDOWN_SINGLE:
+	case LS_SMASHDOWN_STAFF:
+		//////////////////////////////////////////
+		return qtrue;
+	default:
+		break;
+	}
+	return qfalse;
+}
+
 qboolean PM_SaberInOverHeadSlash(const saberMoveName_t saberMove)
 {
 	switch (saberMove)
