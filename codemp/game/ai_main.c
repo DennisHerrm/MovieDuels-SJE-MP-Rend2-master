@@ -79,8 +79,8 @@ int numbots;
 float floattime;
 //time to do a regular update
 float regularupdate_time;
-extern qboolean PM_SaberInMassiveBounce(int anim);
-extern qboolean PM_SaberInBashedAnim(int anim);
+extern qboolean PM_SaberInMassiveBounce(const int anim);
+extern qboolean PM_SaberInBashedAnim(const int anim);
 extern qboolean PM_InKnockDown(const playerState_t* ps);
 int bot_get_weapon_range(const bot_state_t* bs);
 int pass_loved_one_check(const bot_state_t* bs, const gentity_t* ent);
@@ -8726,23 +8726,40 @@ static void melee_combat_handling(bot_state_t* bs)
 
 		if ((forceOnlyDark || forceOnlyLight) &&
 			enemyInKata == qtrue &&
-			PM_InKnockDown(ps) == qfalse)
+			PM_InKnockDown(&bs->cur_ps) == qfalse)
 		{
-			if (bs->DashOutTime <= level.time)  // cooldown expired → reset
+			// -----------------------------------------
+			// Cooldown check: if still cooling down → NO DASH
+			// -----------------------------------------
+			if (bs->DashOutTime > level.time)
+			{
+				BotStartBackOff(bs);
+				return;
+			}
+
+			// -----------------------------------------
+			// Cooldown expired → reset dash counter
+			// -----------------------------------------
+			if (bs->DashOutTime <= level.time)
 			{
 				bs->Dash_BOT_Count = 0;
 			}
-			if (bs->Dash_BOT_Count < 2 && bs->cur_ps.fd.forcePower >= 50)
+
+			// -----------------------------------------
+			// Allow up to 2 dashes
+			// -----------------------------------------
+			if (bs->Dash_BOT_Count < 2 &&
+				bs->cur_ps.fd.forcePower >= 50)
 			{
 				bs->cur_ps.fd.forcePower -= 35;
 				JediDirectionalDashDodge(bs, enemyPos);
 
 				bs->Dash_BOT_Count++;
 
-				// If we just used the 2nd dash → start cooldown
-				if (bs->Dash_BOT_Count >= 1)
+				// Start cooldown after second dash
+				if (bs->Dash_BOT_Count >= 2)
 				{
-					bs->DashOutTime = level.time + Q_irand(10000, 15000);
+					bs->DashOutTime = level.time + Q_irand(5000, 10000);
 				}
 				return;
 			}
@@ -9386,6 +9403,10 @@ extern void ForceDashAnimDash(gentity_t* self);
 static void JediDirectionalDashDodge(bot_state_t* bs, const vec3_t enemyPos)
 {
 	gentity_t* self = &g_entities[bs->client];
+	if (bs->Dash_BOT_Count > 2)
+	{
+		return;
+	}
 
 	// -------------------------------------------------
 	// DETERMINE DODGE DIRECTION BASED ON ATTACK ANGLE
@@ -9540,34 +9561,51 @@ static void saber_combat_handling(bot_state_t* bs)
 	}
 
 	// -------------------------------------------------
-	// EARLY-FRAME KATA REACTION (IMMEDIATE RETREAT)
-	// Only run if enemy is a client and has a valid playerState
-	// -------------------------------------------------
+// EARLY-FRAME KATA REACTION (IMMEDIATE RETREAT)
+// -------------------------------------------------
 	if (bs->currentEnemy != NULL &&
 		bs->currentEnemy->client != NULL &&
 		bs->currentEnemy->s.number < MAX_CLIENTS)
 	{
 		playerState_t* enemy_ps = &bs->currentEnemy->client->ps;
 
-		const qboolean enemyInKata = BotEnemyInKata(enemy_ps) ? qtrue : qfalse;
+		const qboolean enemyInKata = (BotEnemyInKata(enemy_ps) == qtrue) ? qtrue : qfalse;
 
 		if (enemyInKata == qtrue &&
-			PM_SaberInMassiveBounce(enemy_ps->torsoAnim) == qfalse &&
-			PM_SaberInBounce(enemy_ps->torsoAnim) == qfalse &&
-			PM_SaberInBashedAnim(enemy_ps->torsoAnim) == qfalse &&
-			PM_InKnockDown(enemy_ps) == qfalse)
+			PM_SaberInMassiveBounce(bs->cur_ps.torsoAnim) == qfalse &&
+			PM_SaberInBounce(bs->cur_ps.saberMove) == qfalse &&
+			PM_SaberInBashedAnim(bs->cur_ps.torsoAnim) == qfalse &&
+			PM_InKnockDown(&bs->cur_ps) == qfalse)
 		{
+			// -----------------------------------------
+			// Cooldown check: if still cooling down → NO DASH
+			// -----------------------------------------
+			if (bs->DashOutTime > level.time)
+			{
+				BotStartBackOff(bs);
+				return;
+			}
+
+			// -----------------------------------------
+			// Cooldown expired → reset dash counter
+			// -----------------------------------------
 			if (bs->DashOutTime <= level.time)
 			{
 				bs->Dash_BOT_Count = 0;
 			}
-			if (bs->Dash_BOT_Count < 2 && bs->cur_ps.fd.forcePower >= 50)
+
+			// -----------------------------------------
+			// Allow up to 2 dashes
+			// -----------------------------------------
+			if (bs->Dash_BOT_Count < 2 &&
+				bs->cur_ps.fd.forcePower >= 50)
 			{
 				bs->cur_ps.fd.forcePower -= 35;
 				JediDirectionalDashDodge(bs, enemyPos);
 
 				bs->Dash_BOT_Count++;
 
+				// Start cooldown after second dash
 				if (bs->Dash_BOT_Count >= 2)
 				{
 					bs->DashOutTime = level.time + Q_irand(5000, 10000);
@@ -9581,6 +9619,7 @@ static void saber_combat_handling(bot_state_t* bs)
 			}
 		}
 	}
+
 
 	// -------------------------------------------------
 	// SAME GROUND CHECK (UNIFIED HELPER)
@@ -9746,37 +9785,54 @@ static void Enhanced_saber_combat_handling(bot_state_t* bs)
 	}
 
 	// -------------------------------------------------
-	// EARLY-FRAME KATA REACTION
-	// -------------------------------------------------
-	if (bs->currentEnemy &&
-		bs->currentEnemy->client &&
+// EARLY-FRAME KATA REACTION (IMMEDIATE RETREAT)
+// -------------------------------------------------
+	if (bs->currentEnemy != NULL &&
+		bs->currentEnemy->client != NULL &&
 		bs->currentEnemy->s.number < MAX_CLIENTS)
 	{
-		playerState_t* ps = &bs->currentEnemy->client->ps;
+		playerState_t* enemy_ps = &bs->currentEnemy->client->ps;
 
-		const qboolean enemyInKata = BotEnemyInKata(ps);
+		const qboolean enemyInKata = (BotEnemyInKata(enemy_ps) == qtrue) ? qtrue : qfalse;
 
 		if (enemyInKata == qtrue &&
-			PM_SaberInMassiveBounce(ps->torsoAnim) == qfalse &&
-			PM_SaberInBounce(ps->torsoAnim) == qfalse &&
-			PM_SaberInBashedAnim(ps->torsoAnim) == qfalse &&
-			PM_InKnockDown(ps) == qfalse)
+			PM_SaberInMassiveBounce(bs->cur_ps.torsoAnim) == qfalse &&
+			PM_SaberInBounce(bs->cur_ps.saberMove) == qfalse &&
+			PM_SaberInBashedAnim(bs->cur_ps.torsoAnim) == qfalse &&
+			PM_InKnockDown(&bs->cur_ps) == qfalse)
 		{
-			if (bs->DashOutTime <= level.time)  // cooldown expired → reset
+			// -----------------------------------------
+			// Cooldown check: if still cooling down → NO DASH
+			// -----------------------------------------
+			if (bs->DashOutTime > level.time)
+			{
+				BotStartBackOff(bs);
+				return;
+			}
+
+			// -----------------------------------------
+			// Cooldown expired → reset dash counter
+			// -----------------------------------------
+			if (bs->DashOutTime <= level.time)
 			{
 				bs->Dash_BOT_Count = 0;
 			}
-			if (bs->Dash_BOT_Count < 2 && bs->cur_ps.fd.forcePower >= 50)
+
+			// -----------------------------------------
+			// Allow up to 2 dashes
+			// -----------------------------------------
+			if (bs->Dash_BOT_Count < 2 &&
+				bs->cur_ps.fd.forcePower >= 50)
 			{
 				bs->cur_ps.fd.forcePower -= 35;
 				JediDirectionalDashDodge(bs, enemyPos);
 
 				bs->Dash_BOT_Count++;
 
-				// If we just used the 2nd dash → start cooldown
+				// Start cooldown after second dash
 				if (bs->Dash_BOT_Count >= 2)
 				{
-					bs->DashOutTime = level.time + Q_irand(10000, 15000);
+					bs->DashOutTime = level.time + Q_irand(5000, 10000);
 				}
 				return;
 			}
@@ -9787,6 +9843,7 @@ static void Enhanced_saber_combat_handling(bot_state_t* bs)
 			}
 		}
 	}
+
 
 	// -------------------------------------------------
 	// IDEAL SPACING FOR ENHANCED DUELS

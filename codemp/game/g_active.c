@@ -77,7 +77,7 @@ extern int IsPressingDashButton(const gentity_t* self);
 extern qboolean PM_StandingAnim(int anim);
 extern qboolean PM_InKnockDownOnly(int anim);
 extern qboolean PM_SaberInTransitionAny(int move);
-extern qboolean PM_SaberInMassiveBounce(int anim);
+extern qboolean PM_SaberInMassiveBounce(const int anim);
 extern qboolean PM_Saberinstab(int move);
 extern float manual_npc_saberblocking(const gentity_t* defender);
 extern float Manual_NPCKickAbsorbing(const gentity_t* defender);

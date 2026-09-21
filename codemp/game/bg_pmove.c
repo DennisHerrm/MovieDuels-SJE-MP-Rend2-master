@@ -104,7 +104,7 @@ extern qboolean PM_InSlapDown(const playerState_t* ps);
 qboolean PM_RollingAnim(int anim);
 extern qboolean PM_MeleeblockHoldAnim(int anim);
 extern int PM_InGrappleMove(int anim);
-extern qboolean PM_SaberInMassiveBounce(int anim);
+extern qboolean PM_SaberInMassiveBounce(const int anim);
 extern qboolean PM_InRollIgnoreTimer(const playerState_t* ps);
 extern qboolean PM_SaberInBashedAnim(int anim);
 extern qboolean BG_SaberSprintAnim(int anim);
@@ -1423,6 +1423,81 @@ int PM_IdlePoseForsaber_anim_level(void)
 		}
 	}
 	return anim;
+}
+
+static qboolean PM_EnemyInFrontCloseRange(void)
+{
+#ifdef _GAME
+	// safety checks
+	if (!pm || !pm->ps)
+	{
+		return qfalse;
+	}
+
+	int selfNum = pm->ps->clientNum;
+	if (selfNum < 0 || selfNum >= MAX_GENTITIES)
+	{
+		return qfalse;
+	}
+
+	gentity_t* self = &g_entities[selfNum];
+	if (!self || !self->client)
+	{
+		return qfalse;
+	}
+
+	vec3_t start;
+	VectorCopy(pm->ps->origin, start);
+	start[2] += 24.0f; // eye height
+
+	const float range = 350.0f;    // close range
+	const float arcDegrees = 45.0f; // arc to each side
+
+	vec3_t baseAngles;
+	baseAngles[0] = pm->ps->viewangles[PITCH];
+	baseAngles[1] = pm->ps->viewangles[YAW];
+	baseAngles[2] = pm->ps->viewangles[ROLL];
+
+	float yawOffsets[3] = { 0.0f, -arcDegrees, arcDegrees };
+
+	for (int i = 0; i < 3; i++)
+	{
+		vec3_t testAngles;
+		VectorCopy(baseAngles, testAngles);
+		testAngles[YAW] += yawOffsets[i];
+
+		vec3_t forward, end;
+		AngleVectors(testAngles, forward, NULL, NULL);
+		VectorMA(start, range, forward, end);
+
+		trace_t tr;
+		// use the player's entity number as the passEntity parameter
+		pm->trace(&tr, start, vec3_origin, vec3_origin, end, selfNum, MASK_SHOT);
+
+		if (tr.fraction < 1.0f && tr.entityNum >= 0 && tr.entityNum < MAX_GENTITIES)
+		{
+			gentity_t* hit = &g_entities[tr.entityNum];
+			if (!hit)
+			{
+				continue;
+			}
+
+			// must be a client and alive
+			if (!hit->client || hit->health <= 0)
+			{
+				continue;
+			}
+
+			// must be an enemy
+			if (hit->client->playerTeam != self->client->playerTeam)
+			{
+				return qtrue;
+			}
+		}
+	}
+#endif
+
+	return qfalse;
 }
 
 int PM_ReadyPoseForsaber_anim_levelBOT(void)

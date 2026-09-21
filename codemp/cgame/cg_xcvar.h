@@ -279,5 +279,6 @@ XCVAR_DEF(g_noIgniteTwirl, "0", NULL, CVAR_ARCHIVE)
 XCVAR_DEF(in_joystick, "0", NULL, CVAR_ARCHIVE)
 XCVAR_DEF(cg_scaleJoystickSensitivity, "0", NULL, CVAR_ARCHIVE)
 XCVAR_DEF(g_DrawCoolDown, "0", NULL, CVAR_ARCHIVE)
+XCVAR_DEF(g_AllowSmashDown, "0", NULL, CVAR_ARCHIVE)
 
 #undef XCVAR_DEF
