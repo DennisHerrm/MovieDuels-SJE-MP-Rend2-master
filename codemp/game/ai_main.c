@@ -725,6 +725,13 @@ static qboolean AI_ComputeBallisticJump(gentity_t* bot,
 	if (height <= 0.0f)
 		height = 1.0f;
 
+	if (bot->client->ps.gravity <= 0)
+	{
+		//ps.gravity is still 0 between ClientSpawn and the bot's first ClientThink;
+		//dividing by it gave time = inf and outVel[2] = inf * 0 = NaN (bot origin NaN)
+		return qfalse;
+	}
+
 	time = sqrtf(height / (0.5f * bot->client->ps.gravity));
 	if (time <= 0.0f)
 		return qfalse;
