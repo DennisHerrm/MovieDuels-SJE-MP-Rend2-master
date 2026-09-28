@@ -6493,7 +6493,11 @@ static void PM_WaterMove(void)
 		{
 #ifdef _GAME
 			gentity_t* self = &g_entities[pm->ps->clientNum];
-			G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));
+			//only when entering the water/ladder (waterlevel of the previous pmove), not every pmove
+			if (self->waterlevel <= 1)
+			{
+				G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));
+			}
 #endif
 		}
 	}
@@ -6602,7 +6606,11 @@ static void PM_LadderMove(void)
 		{
 #ifdef _GAME
 			gentity_t* self = &g_entities[pm->ps->clientNum];
-			G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));
+			//only when entering the water/ladder (waterlevel of the previous pmove), not every pmove
+			if (self->waterlevel <= 1)
+			{
+				G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));
+			}
 #endif
 		}
 	}
@@ -10340,7 +10348,11 @@ static void PM_SwimFloatAnim(void)
 		{
 #ifdef _GAME
 			gentity_t* self = &g_entities[pm->ps->clientNum];
-			G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));
+			//only when entering the water/ladder (waterlevel of the previous pmove), not every pmove
+			if (self->waterlevel <= 1)
+			{
+				G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));
+			}
 #endif
 		}
 	}
@@ -10598,7 +10610,11 @@ static void PM_Footsteps(void)
 				{
 #ifdef _GAME
 					gentity_t* self = &g_entities[pm->ps->clientNum];
-					G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));
+					//only when entering the water (waterlevel of the previous pmove), not every pmove
+					if (self->waterlevel <= 1)
+					{
+						G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/change.wav"));
+					}
 #endif
 				}
 			}
