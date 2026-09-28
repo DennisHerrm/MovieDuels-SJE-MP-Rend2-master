@@ -10570,8 +10570,11 @@ static int saber_bot_fallback_navigation(bot_state_t* bs)
 			// Ready for a new point.
 			const int choice = rand() % 4;
 			qboolean found = qfalse;
+			int tries = 0;
 
-			while (found == qfalse)
+			//bounded: with the bot origin in solid or not a number no point is ever visible
+			//and the server hung here forever
+			while (found == qfalse && tries++ < 256)
 			{
 				if (choice == 2)
 				{
@@ -10600,7 +10603,15 @@ static int saber_bot_fallback_navigation(bot_state_t* bs)
 					found = qtrue;
 			}
 
-			next_point[bs->entityNum] = level.time + 2000 + rand() % 5 * 1000;
+			if (found == qfalse)
+			{
+				//nothing visible this frame, keep the old goal and try again next frame
+				VectorCopy(bs->goalPosition, trto);
+			}
+			else
+			{
+				next_point[bs->entityNum] = level.time + 2000 + rand() % 5 * 1000;
+			}
 		}
 		else
 		{
