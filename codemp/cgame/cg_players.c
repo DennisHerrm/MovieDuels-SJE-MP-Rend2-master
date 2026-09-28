@@ -14529,96 +14529,262 @@ extern playerState_t* cgSendPS[MAX_GENTITIES];
 
 static void CG_G2AnimEntModelLoad(centity_t* cent)
 {
-	clientInfo_t* ci = cent->npcClient;
-	if (!ci)
+	const char* cModelName = CG_ConfigString(CS_MODELS + cent->currentState.modelIndex);
+
+	if (!cent->npcClient)
 	{
+		//have not init'd client yet
 		return;
 	}
 
-	// ------------------------------------------------------------
-	// HUMANOID DETECTION USING PREFIX LIST
-	// ------------------------------------------------------------
-	qboolean isHumanoid = qfalse;
-
-	if (ci->glaName[0] && R_IsHumanoidPath(ci->glaName))
+	if (cModelName && cModelName[0])
 	{
-		isHumanoid = qtrue;
-	}
+		char modelName[MAX_QPATH];
+		int skinID;
 
-	// ------------------------------------------------------------
-	// NON-HUMANOID: load its own animation.cfg
-	// ------------------------------------------------------------
-	if (!isHumanoid)
-	{
-		char animPath[MAX_QPATH];
-		Q_strncpyz(animPath, ci->glaName, sizeof(animPath));
+		Q_strncpyz(modelName, cModelName, sizeof modelName);
 
-		char* slash = Q_strrchr(animPath, '/');
-		if (slash)
+		if (cent->currentState.NPC_class == CLASS_VEHICLE && modelName[0] == '$')
 		{
-			strcpy(slash, "/animation.cfg");
-			cent->localAnimIndex = bg_parse_animation_file(animPath, NULL, qfalse);
+			//vehicles pass their veh names over as model names, then we get the model name from the veh type
+			//create a vehicle object clientside for this type
+			const char* vehType = &modelName[1];
+			const int iVehIndex = BG_VehicleGetIndex(vehType);
+
+			if (iVehIndex == VEHICLE_NONE)
+			{
+				return;
+			}
+
+			switch (g_vehicleInfo[iVehIndex].type)
+			{
+			case VH_ANIMAL:
+				G_CreateAnimalNPC(&cent->m_pVehicle, vehType);
+				break;
+			case VH_SPEEDER:
+				G_CreateSpeederNPC(&cent->m_pVehicle, vehType);
+				break;
+			case VH_FIGHTER:
+				G_CreateFighterNPC(&cent->m_pVehicle, vehType);
+				break;
+			case VH_WALKER:
+				G_CreateWalkerNPC(&cent->m_pVehicle, vehType);
+				break;
+			default:
+				assert(!"vehicle with an unknown type - couldn't create vehicle_t");
+				return;
+			}
+
+			//set up my happy prediction hack
+			cent->m_pVehicle->m_vOrientation = &cgSendPS[cent->currentState.number]->vehOrientation[0];
+
+			cent->m_pVehicle->m_pParentEntity = (bgEntity_t*)cent;
+
+			//attach the handles for fx cgame-side
+			CG_RegisterVehicleAssets(cent->m_pVehicle);
+
+			BG_GetVehicleModelName(modelName, modelName, sizeof modelName);
+			if (cent->m_pVehicle->m_pVehicleInfo->skin &&
+				cent->m_pVehicle->m_pVehicleInfo->skin[0])
+			{
+				//use a custom skin
+				skinID = trap->R_RegisterSkin(va("models/players/%s/model_%s.skin", modelName, cent->m_pVehicle->m_pVehicleInfo->skin));
+			}
+			else
+			{
+				skinID = trap->R_RegisterSkin(va("models/players/%s/model_default.skin", modelName));
+			}
+			Q_strncpyz(modelName, va("models/players/%s/model.glm", modelName), sizeof modelName);
+
+			//this sound is *only* used for vehicles now
+			cgs.media.noAmmoSound = trap->S_RegisterSound("sound/weapons/noammo.wav");
+		}
+		else
+		{
+			skinID = CG_HandleAppendedSkin(modelName); //get the skin if there is one.
 		}
 
-		return;
-	}
-
-	// ------------------------------------------------------------
-	// HUMANOID: add humanoid bolts and set anim index
-	// ------------------------------------------------------------
-	trap->G2API_AddBolt(cent->ghoul2, 0, "*r_hand");
-	trap->G2API_AddBolt(cent->ghoul2, 0, "*l_hand");
-	trap->G2API_AddBolt(cent->ghoul2, 0, "*chestg");
-	trap->G2API_AddBolt(cent->ghoul2, 0, "*r_hand_cap_r_arm");
-	trap->G2API_AddBolt(cent->ghoul2, 0, "*l_hand_cap_l_arm");
-
-	// Rocket trooper exception
-	if (strstr(ci->modelName, "rockettrooper"))
-	{
-		cent->localAnimIndex = 1;
-	}
-	else
-	{
-		cent->localAnimIndex = 0;
-	}
-
-	if (trap->G2API_AddBolt(cent->ghoul2, 0, "*head_top") == -1)
-	{
-		trap->G2API_AddBolt(cent->ghoul2, 0, "ceyebrow");
-	}
-
-	trap->G2API_AddBolt(cent->ghoul2, 0, "Motion");
-
-	// ------------------------------------------------------------
-	// LUMBAR / FACE BONE CHECKS
-	// ------------------------------------------------------------
-	if (trap->G2API_AddBolt(cent->ghoul2, 0, "lower_lumbar") == -1)
-	{
-		cent->noLumbar = qtrue;
-	}
-
-	if (trap->G2API_AddBolt(cent->ghoul2, 0, "face") == -1)
-	{
-		cent->noFace = qtrue;
-	}
-
-	// ------------------------------------------------------------
-	// EVENT FILE PARSING
-	// ------------------------------------------------------------
-	if (cent->localAnimIndex != -1)
-	{
-		char basePath[MAX_QPATH];
-		Q_strncpyz(basePath, ci->animName, sizeof(basePath));
-
-		char* slash = Q_strrchr(basePath, '/');
-		if (slash)
+		if (cent->ghoul2)
 		{
-			slash++;
-			*slash = 0;
+			//clean it first!
+			trap->G2API_CleanGhoul2Models(&cent->ghoul2);
 		}
 
-		cent->eventAnimIndex =
-			BG_ParseAnimationEvtFile(basePath, cent->localAnimIndex, bgNumAnimEvents);
+		trap->G2API_InitGhoul2Model(&cent->ghoul2, modelName, 0, skinID, 0, 0, 0);
+
+		if (cent->ghoul2)
+		{
+			char GLAName[MAX_QPATH];
+			char originalModelName[MAX_QPATH];
+			const char* saber;
+			int j = 0;
+
+			if (cent->currentState.NPC_class == CLASS_VEHICLE &&
+				cent->m_pVehicle)
+			{
+				//do special vehicle stuff
+				char strTemp[128];
+				int i;
+
+				// Setup the default first bolt
+				trap->G2API_AddBolt(cent->ghoul2, 0, "model_root");
+
+				// Setup the droid unit.
+				cent->m_pVehicle->m_iDroidUnitTag = trap->G2API_AddBolt(cent->ghoul2, 0, "*droidunit");
+
+				// Setup the Exhausts.
+				for (i = 0; i < MAX_VEHICLE_EXHAUSTS; i++)
+				{
+					Com_sprintf(strTemp, sizeof strTemp, "*exhaust%i", i + 1);
+					cent->m_pVehicle->m_iExhaustTag[i] = trap->G2API_AddBolt(cent->ghoul2, 0, strTemp);
+				}
+
+				// Setup the Muzzles.
+				for (i = 0; i < MAX_VEHICLE_MUZZLES; i++)
+				{
+					Com_sprintf(strTemp, sizeof strTemp, "*muzzle%i", i + 1);
+					cent->m_pVehicle->m_iMuzzleTag[i] = trap->G2API_AddBolt(cent->ghoul2, 0, strTemp);
+					if (cent->m_pVehicle->m_iMuzzleTag[i] == -1)
+					{
+						//ergh, try *flash?
+						Com_sprintf(strTemp, sizeof strTemp, "*flash%i", i + 1);
+						cent->m_pVehicle->m_iMuzzleTag[i] = trap->G2API_AddBolt(cent->ghoul2, 0, strTemp);
+					}
+				}
+
+				// Setup the Turrets.
+				for (i = 0; i < MAX_VEHICLE_TURRETS; i++)
+				{
+					if (cent->m_pVehicle->m_pVehicleInfo->turret[i].gunnerViewTag)
+					{
+						cent->m_pVehicle->m_iGunnerViewTag[i] = trap->G2API_AddBolt(cent->ghoul2, 0, cent->m_pVehicle->m_pVehicleInfo->turret[i].gunnerViewTag);
+					}
+					else
+					{
+						cent->m_pVehicle->m_iGunnerViewTag[i] = -1;
+					}
+				}
+			}
+
+			//valid saber names always start with '@' for NPCs
+			if (cent->currentState.npcSaber1)
+			{
+				saber = CG_ConfigString(CS_MODELS + cent->currentState.npcSaber1);
+				if (saber && saber[0] == '@')
+				{
+					WP_SetSaber(cent->currentState.number, cent->npcClient->saber, 0, saber + 1);
+				}
+			}
+			if (cent->currentState.npcSaber2)
+			{
+				saber = CG_ConfigString(CS_MODELS + cent->currentState.npcSaber2);
+				if (saber && saber[0] == '@')
+				{
+					WP_SetSaber(cent->currentState.number, cent->npcClient->saber, 1, saber + 1);
+				}
+			}
+
+			// If this is a not vehicle, give it saber stuff...
+			if (cent->currentState.NPC_class != CLASS_VEHICLE)
+			{
+				while (j < MAX_SABERS)
+				{
+					if (cent->npcClient->saber[j].model[0])
+					{
+						if (cent->npcClient->ghoul2Weapons[j])
+						{
+							//free the old instance(s)
+							trap->G2API_CleanGhoul2Models(&cent->npcClient->ghoul2Weapons[j]);
+							cent->npcClient->ghoul2Weapons[j] = 0;
+						}
+
+						CG_InitG2SaberData(j, cent->npcClient);
+					}
+					j++;
+				}
+			}
+
+			trap->G2API_SetSkin(cent->ghoul2, 0, skinID, skinID);
+
+			cent->localAnimIndex = -1;
+
+			GLAName[0] = 0;
+			trap->G2API_GetGLAName(cent->ghoul2, 0, GLAName);
+
+			Q_strncpyz(originalModelName, modelName, sizeof originalModelName);
+
+			// ------------------------------------------------------------
+			// HUMANOID DETECTION USING PREFIX LIST
+			// (same rule as the server in g_client.c, SetupGameGhoul2Model)
+			// ------------------------------------------------------------
+			if (!R_IsHumanoidPath(GLAName))
+			{
+				//it doesn't use humanoid anims.
+				char* slash = Q_strrchr(GLAName, '/');
+				if (slash)
+				{
+					strcpy(slash, "/animation.cfg");
+
+					cent->localAnimIndex = bg_parse_animation_file(GLAName, NULL, qfalse);
+				}
+			}
+			else
+			{
+				//humanoid index.
+				trap->G2API_AddBolt(cent->ghoul2, 0, "*r_hand");
+				trap->G2API_AddBolt(cent->ghoul2, 0, "*l_hand");
+
+				//rhand must always be first bolt. lhand always second. Whichever you want the
+				//jetpack bolted to must always be third.
+				trap->G2API_AddBolt(cent->ghoul2, 0, "*chestg");
+
+				//claw bolts
+				trap->G2API_AddBolt(cent->ghoul2, 0, "*r_hand_cap_r_arm");
+				trap->G2API_AddBolt(cent->ghoul2, 0, "*l_hand_cap_l_arm");
+
+				//all humanoid-prefix models share index 0 (_humanoid_mp), as on the server
+				cent->localAnimIndex = 0;
+
+				if (trap->G2API_AddBolt(cent->ghoul2, 0, "*head_top") == -1)
+				{
+					trap->G2API_AddBolt(cent->ghoul2, 0, "ceyebrow");
+				}
+				trap->G2API_AddBolt(cent->ghoul2, 0, "Motion");
+			}
+
+			// If this is a not vehicle...
+			if (cent->currentState.NPC_class != CLASS_VEHICLE)
+			{
+				if (trap->G2API_AddBolt(cent->ghoul2, 0, "lower_lumbar") == -1)
+				{
+					//check now to see if we have this bone for setting anims and such
+					cent->noLumbar = qtrue;
+				}
+
+				if (trap->G2API_AddBolt(cent->ghoul2, 0, "face") == -1)
+				{
+					//check now to see if we have this bone for setting anims and such
+					cent->noFace = qtrue;
+				}
+			}
+			else
+			{
+				cent->noLumbar = qtrue;
+				cent->noFace = qtrue;
+			}
+
+			if (cent->localAnimIndex != -1)
+			{
+				char* slash = Q_strrchr(originalModelName, '/');
+				if (slash)
+				{
+					slash++;
+					*slash = 0;
+				}
+
+				cent->eventAnimIndex = BG_ParseAnimationEvtFile(originalModelName, cent->localAnimIndex, bgNumAnimEvents);
+			}
+		}
 	}
 
 	// ------------------------------------------------------------
