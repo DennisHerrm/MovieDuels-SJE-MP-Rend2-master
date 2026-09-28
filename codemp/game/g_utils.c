@@ -1210,15 +1210,16 @@ gentity_t* G_Spawn(void)
 			return e;
 		}
 
-		// IMPORTANT FIX:
-		// If we did NOT reach the end of the active entity list,
-		// break out and do NOT force reuse yet.
-		if (i != level.num_entities)
+		// Only force the reuse of a slot freed less than a second ago when no new
+		// slot can be opened any more (the loop always ends with i == level.num_entities,
+		// so the old check "i != level.num_entities" never broke out and the freetime
+		// rule above was always bypassed).
+		if (level.num_entities < ENTITYNUM_MAX_NORMAL)
 			break;
 	}
 
 	// No free slot found — try to remove something safely
-	if (i == ENTITYNUM_MAX_NORMAL)
+	if (level.num_entities >= ENTITYNUM_MAX_NORMAL)
 	{
 		e = find_remove_able_gent();
 		if (e)
@@ -1228,8 +1229,9 @@ gentity_t* G_Spawn(void)
 			return e;
 		}
 
+		// Never hand out ENTITYNUM_WORLD / ENTITYNUM_NONE
 		G_SpewEntList();
-		Com_Printf("^1G_Spawn: no free entities — attempting to recover\n");
+		trap->Error(ERR_DROP, "G_Spawn: no free entities");
 	}
 
 	// HARD LIMIT CHECK — this is the critical fix
