@@ -1887,7 +1887,9 @@ int R_LerpTag(orientation_t* tag, qhandle_t handle, int startFrame, int endFrame
 	model_t* model;
 
 	model = R_GetModelByHandle(handle);
-	if (!model->data.mdv[0])
+	// model->data is a union: for ghoul2 / mdr / iqm / brush models mdv[0] is not NULL,
+	// so check the type before reading it as an md3 (like rd-vanilla, which has a separate md3 field)
+	if (model->type != MOD_MESH || !model->data.mdv[0])
 	{
 		if (model->type == MOD_MDR)
 		{
