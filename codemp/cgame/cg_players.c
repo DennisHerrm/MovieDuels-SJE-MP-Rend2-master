@@ -21524,10 +21524,10 @@ stillDoSaber:
 	if (cent->currentState.weapon != WP_EMPLACED_GUN)
 	{
 		if ((cent->currentState.eFlags & EF3_DUAL_WEAPONS) &&
-			cent->currentState.weapon == WP_BRYAR_PISTOL ||
+			(cent->currentState.weapon == WP_BRYAR_PISTOL ||
 			cent->currentState.weapon == WP_REY ||
 			cent->currentState.weapon == WP_JANGO ||
-			cent->currentState.weapon == WP_CLONEPISTOL)
+			cent->currentState.weapon == WP_CLONEPISTOL))
 		{
 			// Right-hand world weapon (Ghoul2 index 1)
 			CG_AddViewWeaponDuals(
