@@ -1718,7 +1718,7 @@ void RE_HunkClearCrap(void)
 	tr.numSkins = 0;
 }
 
-static void R_ModelFree(void)
+void R_ModelFree(void)
 {
 	if (CachedModels) {
 		RE_RegisterModels_DeleteAll();
