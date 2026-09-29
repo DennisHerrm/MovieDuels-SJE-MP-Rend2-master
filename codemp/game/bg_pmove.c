@@ -3788,7 +3788,7 @@ static qboolean PM_AdjustAngleForWallRun(playerState_t* ps, usercmd_t* ucmd, con
 			//still a vertical wall there
 #ifdef _GAME
 			if ((g_entities[pm->ps->clientNum].r.svFlags & SVF_BOT || pm_entSelf->s.eType == ET_NPC) ||
-				(!(ps->userInt3 |= 1 << FLAG_FROZEN)))
+				(!(ps->userInt3 & 1 << FLAG_FROZEN)))
 			{
 				// Maintain right/left movement
 				if (ps->legsAnim == BOTH_WALL_RUN_RIGHT)
@@ -3823,7 +3823,7 @@ static qboolean PM_AdjustAngleForWallRun(playerState_t* ps, usercmd_t* ucmd, con
 			// ------------------------------------------------------------------
 #ifdef _GAME
 			if ((g_entities[pm->ps->clientNum].r.svFlags & SVF_BOT || pm_entSelf->s.eType == ET_NPC) ||
-				(!(ps->userInt3 |= 1 << FLAG_FROZEN)))
+				(!(ps->userInt3 & 1 << FLAG_FROZEN)))
 			{
 				if (doMove == qtrue)
 				{
