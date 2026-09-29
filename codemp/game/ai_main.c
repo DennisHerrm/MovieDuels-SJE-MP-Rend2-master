@@ -5962,9 +5962,9 @@ int pass_loved_one_check(const bot_state_t* bs, const gentity_t* ent)
 
 	int i = 0;
 
-	if (!botstates[ent->s.number])
+	if (ent->s.number >= MAX_CLIENTS || !botstates[ent->s.number])
 	{
-		//not a bot
+		//not a bot (NPCs and vehicles have a client too, but botstates only has MAX_CLIENTS entries)
 		return 1;
 	}
 
