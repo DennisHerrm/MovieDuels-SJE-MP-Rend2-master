@@ -874,7 +874,8 @@ static void CG_General(centity_t* cent)
 		}
 	}
 
-	if (cent->currentState.weapon == WP_STUN_BATON)
+	//corpses (ET_BODY, also drawn here) keep the weapon of the dead player: no stun cable / grapple line for them
+	if (cent->currentState.weapon == WP_STUN_BATON && cent->currentState.eType != ET_BODY)
 	{
 		int i;
 		orientation_t lerped;
@@ -910,7 +911,7 @@ static void CG_General(centity_t* cent)
 		//GOING OUT
 	}
 
-	if (cent->currentState.weapon == WP_MELEE)
+	if (cent->currentState.weapon == WP_MELEE && cent->currentState.eType != ET_BODY)
 	{
 		int i;
 		orientation_t lerped;
