@@ -3239,16 +3239,35 @@ Send message to player that their model/class is changing.
 Kills the player (except in duel/siege) so changes apply.
 ==================
 */
+// Class, scale and model before the current G_AssignClassAndScaleFromModel call.
+// client_userinfo_Message is called from every class branch, also when only the
+// name or another userinfo value changed; it must only act on a real change.
+static int s_classMsgOldClass;
+static int s_classMsgOldScale;
+static qboolean s_classMsgModelChanged;
+static char s_classMsgLastModel[MAX_CLIENTS][MAX_QPATH];
+
 static qboolean client_userinfo_Message(const int clientNum)
 {
 	gentity_t* ent = &g_entities[clientNum];
 	gclient_t* client = ent->client;
 
+	if (client->pers.nextbotclass == s_classMsgOldClass &&
+		client->pers.botmodelscale == s_classMsgOldScale &&
+		!s_classMsgModelChanged)
+	{
+		// nothing changed (e.g. /name): no message, no kill
+		return qtrue;
+	}
+
 	if (!(ent->r.svFlags & SVF_BOT))
 	{
 		if (g_gametype.integer != GT_DUEL &&
 			g_gametype.integer != GT_POWERDUEL &&
-			g_gametype.integer != GT_SIEGE)
+			g_gametype.integer != GT_SIEGE &&
+			client->pers.connected == CON_CONNECTED &&
+			client->sess.sessionTeam != TEAM_SPECTATOR &&
+			ent->health > 0)
 		{
 			client->ps.stats[STAT_HEALTH] = 0;
 			ent->health = 0;
@@ -3275,6 +3294,16 @@ Class_Model System
 static void G_AssignClassAndScaleFromModel(gentity_t* ent, const int clientNum, char* userinfo, char* model)
 {
 	gclient_t* client = ent->client;
+
+	// remember the state before this userinfo change for client_userinfo_Message
+	s_classMsgOldClass = client->pers.botclass;
+	s_classMsgOldScale = client->pers.botmodelscale;
+	s_classMsgModelChanged = qfalse;
+	if (clientNum >= 0 && clientNum < MAX_CLIENTS)
+	{
+		s_classMsgModelChanged = Q_stricmp(model, s_classMsgLastModel[clientNum]) ? qtrue : qfalse;
+		Q_strncpyz(s_classMsgLastModel[clientNum], model, sizeof s_classMsgLastModel[clientNum]);
+	}
 
 	// ------------------------------------------------------------------
 	// LOAD CLASS SYSTEM (PLAYERS + BOTS ONLY, NO NPC, NO SIEGE)
