@@ -5122,14 +5122,15 @@ CG_PlayerPowerups
 static void CG_PlayerPowerups(centity_t* cent)
 {
 	const int powerups = cent->currentState.powerups;
-	const int health = cg.snap->ps.stats[STAT_HEALTH];
 
 	if (!powerups)
 	{
 		return;
 	}
 
-	if (health < 1)
+	// no effects on a dead player - test this entity, not the viewer (cg.snap->ps is the local
+	// player: while he was dead, the flags and force effects of all other players disappeared)
+	if (cent->currentState.eFlags & EF_DEAD)
 	{
 		return;
 	}
