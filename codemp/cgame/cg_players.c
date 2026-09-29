@@ -6312,8 +6312,13 @@ void CG_ParseScriptedSaber(char* script, clientInfo_t* ci, const int snum)
 	while (p[0] && p - script < l && n < 10)
 	{
 		ParseRGBSaber(p, ci->ScriptedColors[n][snum]);
-		while (p[0] != ':')
+		while (p[0] && p[0] != ':')
 			p++;
+		if (!p[0])
+		{
+			//colour without a time (end of the string): ignore it, don't read past the end
+			break;
+		}
 		p++; //skipped 1st point
 
 		ci->ScriptedTimes[n][snum] = getint(&p);
@@ -6327,6 +6332,14 @@ void CG_ParseScriptedSaber(char* script, clientInfo_t* ci, const int snum)
 static void rgb_adjust_scipted_saber_color(clientInfo_t* ci, vec3_t color, const int n)
 {
 	int actual;
+
+	if (ci->ScriptedNum[n] <= 0)
+	{
+		//empty or broken script (e.g. rgb_script1 ":"): the "% ScriptedNum" below would divide by zero.
+		//Use the same fallback colour as an invalid RGB saber (0.2, 0.4, 1.0 after the caller's / 255).
+		VectorSet(color, 51.0f, 102.0f, 255.0f);
+		return;
+	}
 
 	if (!ci->ScriptedStartTime[n])
 	{
