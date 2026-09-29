@@ -2397,13 +2397,19 @@ void SetupGameGhoul2Model(gentity_t* ent, char* modelname, char* skinName)
 	char gla_name[MAX_QPATH] = { 0 };
 	const vec3_t tempVec = { 0, 0, 0 };
 
+	// The model name comes from the client's userinfo: a name that is too long must not stop the
+	// server (it was ERR_FATAL), use the default model instead.
+	char safeModel[MAX_QPATH];
 	if (strlen(modelname) >= MAX_QPATH)
 	{
-		Com_Error(ERR_FATAL, "SetupGameGhoul2Model(%s): modelname exceeds MAX_QPATH.\n", modelname);
+		Com_Printf(S_COLOR_YELLOW "SetupGameGhoul2Model: modelname exceeds MAX_QPATH, using %s\n", DEFAULT_MODEL);
+		Q_strncpyz(safeModel, DEFAULT_MODEL, sizeof safeModel);
+		modelname = safeModel;
 	}
 	if (skinName && strlen(skinName) >= MAX_QPATH)
 	{
-		Com_Error(ERR_FATAL, "SetupGameGhoul2Model(%s): skinName exceeds MAX_QPATH.\n", skinName);
+		Com_Printf(S_COLOR_YELLOW "SetupGameGhoul2Model: skinName exceeds MAX_QPATH, using the default skin\n");
+		skinName = NULL;
 	}
 
 	// First things first.  If this is a ghoul2 model, then let's make sure we demolish this first.
