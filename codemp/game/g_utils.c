@@ -2683,6 +2683,7 @@ void TextWrapCenterPrint(char orgtext[CENTERPRINT_MAXSTRING], char output[CENTER
 	//running sje.  Clients running sje do this text wrapping on the client side.
 	//scan thru print text and add new lines where needed.
 	int orgIndex, outputIndex, charCounter;
+	int lineStart = 0; //orgtext index of the first char of the current output line
 
 	for (orgIndex = 0, outputIndex = 0, charCounter = 0;
 		orgIndex < CENTERPRINT_MAXSTRING && outputIndex < CENTERPRINT_MAXSTRING;
@@ -2692,6 +2693,7 @@ void TextWrapCenterPrint(char orgtext[CENTERPRINT_MAXSTRING], char output[CENTER
 		{
 			//manual newline, reset charCounter
 			charCounter = -1;
+			lineStart = orgIndex + 1;
 		}
 
 		if (charCounter == 50)
@@ -2703,7 +2705,9 @@ void TextWrapCenterPrint(char orgtext[CENTERPRINT_MAXSTRING], char output[CENTER
 				const int savedOrgIndex = orgIndex;
 				const int savedOutputIndex = outputIndex;
 
-				for (; orgIndex >= 0; orgIndex--, outputIndex--)
+				//only search the current line: a whitespace before it (a word longer than a line)
+				//would break at the same place again and again, forever.
+				for (; orgIndex >= lineStart; orgIndex--, outputIndex--)
 				{
 					if (BG_IsWhiteSpace(orgtext[orgIndex]))
 					{
@@ -2714,7 +2718,7 @@ void TextWrapCenterPrint(char orgtext[CENTERPRINT_MAXSTRING], char output[CENTER
 						break;
 					}
 				}
-				if (orgIndex < 0)
+				if (orgIndex < lineStart)
 				{
 					//couldn't find a break in the text, just go ahead and cut off the word mid-word.
 					orgIndex = savedOrgIndex;
@@ -2727,6 +2731,9 @@ void TextWrapCenterPrint(char orgtext[CENTERPRINT_MAXSTRING], char output[CENTER
 
 			//reset charCounter, set to -1 to account for autoincrement
 			charCounter = -1;
+
+			//the char at orgIndex starts the next line
+			lineStart = orgIndex;
 
 			//decrement orgtext index so we'll try to recopy this char on the next pass.
 			orgIndex--;
